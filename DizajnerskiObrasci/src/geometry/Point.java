@@ -7,6 +7,7 @@ public class Point extends Shape {
 
 	private int x;
 	private int y;
+	private Color color;
 
 	public Point() {
 
@@ -17,6 +18,13 @@ public class Point extends Shape {
 		this.y = y;
 
 	}
+	
+	public Point(int x, int y,Color color) {
+		this.x = x;
+		this.y = y;
+		this.color=color;
+
+	}
 
 	public double distance(int x2, int y2) {
 		double dx = this.x - x2;
@@ -24,6 +32,10 @@ public class Point extends Shape {
 		double d = Math.sqrt(dx * dx + dy * dy);
 		return d;
 	}
+	
+	
+	
+	
 
 	@Override
 	public boolean contains(int x, int y) {
@@ -64,5 +76,15 @@ public class Point extends Shape {
 	public void setY(int y) {
 		this.y = y;
 	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	
 
 }

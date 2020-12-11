@@ -1,4 +1,4 @@
-package frms;
+package mvc;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,7 +27,6 @@ import modifyDlg.DlgDonutMod;
 import modifyDlg.DlgLineMod;
 import modifyDlg.DlgPointMod;
 import modifyDlg.DlgRectMod;
-import pnl.PnlDrawing;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -49,39 +48,43 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Frame;
 
 @SuppressWarnings("serial")
 public class FrmDrawing extends JFrame {
 
 	private JPanel contentPane;
-	PnlDrawing pnlDrawing = new PnlDrawing();
 	private JTextField textBcColor;
 	private JTextField textFillColor;
-	public static Color shapeColor = Color.BLACK;
+	public  Color shapeColor = Color.BLACK;
 	private Color fillColor = Color.WHITE;
 	private final ButtonGroup btnG = new ButtonGroup();
 	private final ButtonGroup btnG1 = new ButtonGroup();
 	private int selectedLast = -1;
-	private Point click1;
 	
 	
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrmDrawing frame = new FrmDrawing();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private DrawingController controller;
+	private PnlDrawing view = new PnlDrawing(); 
+	
+	
+	JToggleButton tgbtnPoint;
+	JToggleButton tgbtnLine;
+	JToggleButton tgbtnCircle;
+	JToggleButton tgbtnRectangle;
+	JToggleButton tgbtnDonut;
+	
+	
+	JRadioButton rdbtnDrawShape;
+	JRadioButton rdbtnSelectShape;
+	
+	JButton btnSetBcColor;
+	JButton btnSetFillColor;
+	
+	JButton btnModify;
+	JButton btnDeleteAll;
+	JButton btnDelete;
+	
+	
 
 	/**
 	 * Create the frame.
@@ -96,9 +99,9 @@ public class FrmDrawing extends JFrame {
 		setResizable(false);
 		setTitle("Bajic Mladen, IT46-2018");
 		
-		pnlDrawing.setLayout(null);
-		pnlDrawing.setBackground(Color.WHITE);
-		contentPane.add(pnlDrawing,BorderLayout.CENTER);
+		view.setLayout(null);
+		view.setBackground(Color.WHITE);
+		contentPane.add(view,BorderLayout.CENTER);
 		
 		JPanel ShapesBtnPanel = new JPanel();
 		ShapesBtnPanel.setBackground(UIManager.getColor("Button.background"));
@@ -111,7 +114,7 @@ public class FrmDrawing extends JFrame {
 		bColorPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Background Color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		bColorPanel.setBackground(SystemColor.menu);
 		
-		JButton btnSetBcColor = new JButton("Set Color");
+		btnSetBcColor = new JButton("Set Color");
 		btnSetBcColor.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSetBcColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -161,7 +164,7 @@ public class FrmDrawing extends JFrame {
 		textFillColor.setEditable(false);
 		textFillColor.setBackground(fillColor);
 		
-		JButton btnSetFillColor = new JButton("Set Color");
+		btnSetFillColor = new JButton("Set Color");
 		btnSetFillColor.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSetFillColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -205,7 +208,7 @@ public class FrmDrawing extends JFrame {
 		actonPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Action", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		actonPanel.setBackground(SystemColor.menu);
 		
-		JButton btnModify = new JButton("Modify");
+		btnModify = new JButton("Modify");
 		btnModify.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -213,7 +216,7 @@ public class FrmDrawing extends JFrame {
 					JOptionPane.showMessageDialog(null, "Nothing is selected!","INFO!", JOptionPane.ERROR_MESSAGE, null);
 					return;
 				} 
-				Shape shapeToModify = pnlDrawing.getShapes().get(selectedLast);
+				Shape shapeToModify = view.getModel().get(selectedLast);
 				if(shapeToModify instanceof Point) {
 					DlgPointMod modPoint = new DlgPointMod();
 					modPoint.fillAll((Point)shapeToModify);
@@ -240,33 +243,26 @@ public class FrmDrawing extends JFrame {
 					
 				}
 				
-				pnlDrawing.repaint();
+				view.repaint();
 			}
 		});
 		
-		JButton btnDelete = new JButton("Delete");
+		btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(selectedLast==-1){
-					JOptionPane.showMessageDialog(null, "Nothing is selected!","INFO!", JOptionPane.ERROR_MESSAGE, null);
-					return;
-				}
-				int mess = JOptionPane.showConfirmDialog(null, "Sure you want to delete?", "CONFIRM", JOptionPane.YES_NO_OPTION);
-				if(mess==0 & pnlDrawing.getShapes().size()>selectedLast) {
-					pnlDrawing.getShapes().remove(selectedLast);
-					pnlDrawing.repaint();
-					selectedLast=-1;
+				if (btnDelete.isEnabled()) {
+					
+						controller.deleteShape();
 				}
 			}
 		});
 		
-		JButton btnDeleteAll = new JButton("Delete All");
+		btnDeleteAll = new JButton("Delete All");
 		btnDeleteAll.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnDeleteAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pnlDrawing.getShapes().clear();
-				pnlDrawing.repaint();
+				controller.deleteAll();
 			}
 		});
 		
@@ -306,7 +302,7 @@ public class FrmDrawing extends JFrame {
 						.addComponent(ShapesBtnPanel, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
 						.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addComponent(pnlDrawing, GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
+					.addComponent(view, GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(18)
@@ -328,7 +324,7 @@ public class FrmDrawing extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
 					.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
 					.addGap(19))
-				.addComponent(pnlDrawing, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+				.addComponent(view, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
@@ -340,21 +336,21 @@ public class FrmDrawing extends JFrame {
 					.addComponent(lblDesignedByMladen))
 		);
 		
-		JRadioButton rdbtnSelectShape = new JRadioButton("Select Shape");
+		rdbtnSelectShape = new JRadioButton("Select Shape");
 		rdbtnSelectShape.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnSelectShape.setForeground(Color.BLUE);
 		rdbtnSelectShape.addItemListener(new ItemListener() {
 			@SuppressWarnings("deprecation")
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() == ItemEvent.SELECTED) {
-					pnlDrawing.setCursor(new Cursor(HAND_CURSOR));
+					view.setCursor(new Cursor(HAND_CURSOR));
 				} else {
-					pnlDrawing.setCursor(new Cursor(DEFAULT_CURSOR));
+					view.setCursor(new Cursor(DEFAULT_CURSOR));
 				}
 			}
 		});
 		
-		JRadioButton rdbtnDrawShape = new JRadioButton(" Draw Shape");
+		rdbtnDrawShape = new JRadioButton(" Draw Shape");
 		rdbtnDrawShape.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnDrawShape.setForeground(Color.RED);
 		GroupLayout gl_modePanel = new GroupLayout(modePanel);
@@ -380,23 +376,23 @@ public class FrmDrawing extends JFrame {
 		);
 		modePanel.setLayout(gl_modePanel);
 		
-		JToggleButton tgbtnPoint = new JToggleButton("Point");
+		tgbtnPoint = new JToggleButton("Point");
 		tgbtnPoint.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		tgbtnPoint.setForeground(Color.BLACK);
 		tgbtnPoint.setBackground(UIManager.getColor("Button.darkShadow"));
 		
-		JToggleButton tgbtnLine = new JToggleButton("Line");
+		tgbtnLine = new JToggleButton("Line");
 		tgbtnLine.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		tgbtnLine.setBackground(UIManager.getColor("Button.darkShadow"));
 		
-		JToggleButton tgbtnRectangle = new JToggleButton("Rectangle");
+		tgbtnRectangle = new JToggleButton("Rectangle");
 		tgbtnRectangle.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		tgbtnRectangle.setBackground(UIManager.getColor("Button.darkShadow"));
 		
-		JToggleButton tgbtnCircle = new JToggleButton("Circle");
+		tgbtnCircle = new JToggleButton("Circle");
 		tgbtnCircle.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
-		JToggleButton tgbtnDonut = new JToggleButton("Donut");
+		tgbtnDonut = new JToggleButton("Donut");
 		tgbtnDonut.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
 		GroupLayout gl_ShapesBtnPanel = new GroupLayout(ShapesBtnPanel);
@@ -438,74 +434,20 @@ public class FrmDrawing extends JFrame {
 		tgbtnPoint.setSelected(true);
 		rdbtnDrawShape.setSelected(true);
 		
-		pnlDrawing.addMouseListener(new MouseAdapter() {
+		view.addMouseListener(new MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {				
-				super.mouseClicked(e);
-				Point mousClick=new Point(e.getX(),e.getY());
-				for(int i=0; i<pnlDrawing.getShapes().size();i++) {
-					selectedLast=-1;
-					pnlDrawing.getShapes().get(i).setSelected(false);;
-					pnlDrawing.repaint();
-				}
+			public void mouseClicked(MouseEvent e) {
 				if(rdbtnSelectShape.isSelected()) {
-					for(int i=0;i<pnlDrawing.getShapes().size();i++) {
-						if(pnlDrawing.getShapes().get(i).contains(e.getX(), e.getY())) {
-							selectedLast=i;
-						}
-					}
-					if(selectedLast!=-1) {
-						pnlDrawing.getShapes().get(selectedLast).setSelected(true);
-					}
-				}else {
-					if(tgbtnPoint.isSelected()) {
-						Point p=new Point(e.getX(),e.getY());
-						p.setColor(shapeColor);
-						pnlDrawing.getShapes().add(p);
-					}else if(tgbtnLine.isSelected()) {
-						if(click1==null) {
-							click1=new Point(e.getX(),e.getY());
-							return;
-						}
-						Point mousClick2 = new Point(e.getX(),e.getY());
-						Line l=new Line(click1,mousClick2,shapeColor);
-						pnlDrawing.getShapes().add(l);
-						click1=null;
-					}else if(tgbtnRectangle.isSelected()) {
-						DlgDrawRec drawRec=new DlgDrawRec();
-						drawRec.setVisible(true);
-						
-						if(drawRec.isFlag()) {						
-							Rectangle rc=new Rectangle(mousClick,Integer.parseInt(drawRec.getTextWidth().getText()),Integer.parseInt(drawRec.getTextHeight().getText()));
-							rc.setColor(shapeColor);
-							rc.setInnerColor(fillColor);
-							pnlDrawing.getShapes().add(rc);
-						}
-					}else if(tgbtnCircle.isSelected()) {
-						DlgDrawCircle drawCircle= new DlgDrawCircle();
-						drawCircle.setVisible(true);
-						
-						if(drawCircle.isFlag()) {
-							Circle c = new Circle(mousClick,Integer.parseInt(drawCircle.getTextRadius().getText()));
-							c.setColor(shapeColor);
-							c.setInnerColor(fillColor);
-							pnlDrawing.getShapes().add(c);
-						}
-						
-					}else if(tgbtnDonut.isSelected()) {
-						DlgDrawDonut drawDonut=new DlgDrawDonut();
-						drawDonut.setVisible(true);
-						
-						if(drawDonut.isFlag1()) {
-							Donut d = new Donut(mousClick,Integer.parseInt(drawDonut.getTextRadius().getText()),Integer.parseInt(drawDonut.getTextInnerRadius().getText()));
-							d.setColor(shapeColor);
-							d.setInnerColor(fillColor);
-							pnlDrawing.getShapes().add(d);
-						}
-					}
+					controller.selectShape(e);
 				}
-				pnlDrawing.repaint();
+				
+				if(rdbtnDrawShape.isSelected()) {
+					controller.addShape(e,shapeColor,fillColor);
+				}
+				
+				
+				
 			}
 			
 			
@@ -513,4 +455,72 @@ public class FrmDrawing extends JFrame {
 		});
 		
 	}
+	
+	
+	
+
+	public JToggleButton getTgbtnPoint() {
+		return tgbtnPoint;
+	}
+
+	public JToggleButton getTgbtnLine() {
+		return tgbtnLine;
+	}
+
+	public JToggleButton getTgbtnCircle() {
+		return tgbtnCircle;
+	}
+
+	public JToggleButton getTgbtnRectangle() {
+		return tgbtnRectangle;
+	}
+
+	public JToggleButton getTgbtnDonut() {
+		return tgbtnDonut;
+	}
+
+	public DrawingController getController() {
+		return controller;
+	}
+
+	public void setController(DrawingController controller) {
+		this.controller = controller;
+	}
+
+	public PnlDrawing getView() {
+		return view;
+	}
+
+	public void setView(PnlDrawing view) {
+		this.view = view;
+	}
+
+
+
+	public Color getShapeColor() {
+		return shapeColor;
+	}
+
+
+
+
+	public void setShapeColor(Color shapeColor) {
+		this.shapeColor = shapeColor;
+	}
+
+
+
+
+	public Color getFillColor() {
+		return fillColor;
+	}
+
+
+
+
+	public void setFillColor(Color fillColor) {
+		this.fillColor = fillColor;
+	}
+	
+	
 }

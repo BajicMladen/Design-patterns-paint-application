@@ -3,13 +3,13 @@ package geometry;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import frms.FrmStack;
 
 public class Rectangle extends SurfaceShape {
 
 	private Point upperLeftPoint;
 	private int height;
 	private int width;
+	
 
 	public Rectangle() {
 
@@ -21,20 +21,19 @@ public class Rectangle extends SurfaceShape {
 		this.width = width;
 	}
 
-	public String toStringStack() {
-		return "Rectangle num-->" + (FrmStack.getStack().getSize() + 1) + ": Upper left point X and Y coordinates: ("
-				+ String.valueOf(getUpperLeftPoint().getX()) + ", " + String.valueOf(getUpperLeftPoint().getY())
-				+ "), Width: " + String.valueOf(getWidth()) + ", Height: " + String.valueOf(getHeight());
+	
+	public Rectangle(Point upperLeftPoint, int height, int width,Color shapeColor,Color fillColor) {
+		this.upperLeftPoint = upperLeftPoint;
+		this.height = height;
+		this.width = width;
+		this.setColor(shapeColor);
+		this.setInnerColor(fillColor);
+		
 	}
+
 
 	public int area() {
 		return this.height * this.width;
-	}
-
-	public String toStringSort() {
-		return "Upper left point X and Y coordinates--> (" + String.valueOf(getUpperLeftPoint().getX()) + ", "
-				+ String.valueOf(getUpperLeftPoint().getY()) + "), Width--> " + String.valueOf(getWidth())
-				+ ", Height--> " + String.valueOf(getHeight()) + ", Area--> " + area();
 	}
 
 	@Override
@@ -56,6 +55,7 @@ public class Rectangle extends SurfaceShape {
 
 	@Override
 	public void draw(Graphics g) {
+		fill(g);
 		g.setColor(getColor());
 		g.drawRect(this.upperLeftPoint.getX(), this.upperLeftPoint.getY(), this.width, this.height);
 		this.fill(g);
