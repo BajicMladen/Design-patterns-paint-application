@@ -60,7 +60,6 @@ public class FrmDrawing extends JFrame {
 	private Color fillColor = Color.WHITE;
 	private final ButtonGroup btnG = new ButtonGroup();
 	private final ButtonGroup btnG1 = new ButtonGroup();
-	private int selectedLast = -1;
 	
 	
 	private DrawingController controller;
@@ -72,6 +71,7 @@ public class FrmDrawing extends JFrame {
 	JToggleButton tgbtnCircle;
 	JToggleButton tgbtnRectangle;
 	JToggleButton tgbtnDonut;
+	JToggleButton tgbtnHexagon;
 	
 	
 	JRadioButton rdbtnDrawShape;
@@ -212,38 +212,7 @@ public class FrmDrawing extends JFrame {
 		btnModify.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(selectedLast == -1) {
-					JOptionPane.showMessageDialog(null, "Nothing is selected!","INFO!", JOptionPane.ERROR_MESSAGE, null);
-					return;
-				} 
-				Shape shapeToModify = view.getModel().get(selectedLast);
-				if(shapeToModify instanceof Point) {
-					DlgPointMod modPoint = new DlgPointMod();
-					modPoint.fillAll((Point)shapeToModify);
-					modPoint.setVisible(true);
-				
-				}else if(shapeToModify instanceof Line) {
-					DlgLineMod modLine=new DlgLineMod();
-					modLine.fillAll((Line)shapeToModify);
-					modLine.setVisible(true);
-				}else if(shapeToModify instanceof Rectangle) {
-					DlgRectMod modRec=new DlgRectMod();
-					modRec.fillAll((Rectangle)shapeToModify);
-					modRec.setVisible(true);
-					
-				}else if(shapeToModify instanceof Donut) {
-					DlgDonutMod modDon=new DlgDonutMod();
-					modDon.fillAll((Donut)shapeToModify);
-					modDon.setVisible(true);
-					
-				}else if(shapeToModify instanceof Circle) {
-					DlgCircleMod modCircle=new DlgCircleMod();
-					modCircle.fillAll((Circle)shapeToModify);
-					modCircle.setVisible(true);
-					
-				}
-				
-				view.repaint();
+				controller.modifyShape();
 			}
 		});
 		
@@ -299,10 +268,11 @@ public class FrmDrawing extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(ShapesBtnPanel, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-						.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(ShapesBtnPanel, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addComponent(view, GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(18)
@@ -317,14 +287,13 @@ public class FrmDrawing extends JFrame {
 							.addComponent(lblDesignedByMladen))))
 		);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(ShapesBtnPanel, GroupLayout.PREFERRED_SIZE, 298, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+					.addComponent(ShapesBtnPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(18)
 					.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
 					.addGap(19))
-				.addComponent(view, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
@@ -332,8 +301,11 @@ public class FrmDrawing extends JFrame {
 					.addComponent(fColorPanel, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
 					.addGap(52)
 					.addComponent(modePanel, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
 					.addComponent(lblDesignedByMladen))
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addComponent(view, GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		
 		rdbtnSelectShape = new JRadioButton("Select Shape");
@@ -395,6 +367,9 @@ public class FrmDrawing extends JFrame {
 		tgbtnDonut = new JToggleButton("Donut");
 		tgbtnDonut.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
+		tgbtnHexagon = new JToggleButton("Hexagon");
+		tgbtnHexagon.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
 		GroupLayout gl_ShapesBtnPanel = new GroupLayout(ShapesBtnPanel);
 		gl_ShapesBtnPanel.setHorizontalGroup(
 			gl_ShapesBtnPanel.createParallelGroup(Alignment.LEADING)
@@ -405,7 +380,8 @@ public class FrmDrawing extends JFrame {
 						.addComponent(tgbtnCircle, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
 						.addComponent(tgbtnRectangle, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
 						.addComponent(tgbtnLine, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-						.addComponent(tgbtnPoint, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
+						.addComponent(tgbtnPoint, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+						.addComponent(tgbtnHexagon, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_ShapesBtnPanel.setVerticalGroup(
@@ -421,7 +397,9 @@ public class FrmDrawing extends JFrame {
 					.addComponent(tgbtnCircle, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(tgbtnDonut, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(20, Short.MAX_VALUE))
+					.addGap(18)
+					.addComponent(tgbtnHexagon, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		ShapesBtnPanel.setLayout(gl_ShapesBtnPanel);
 		contentPane.setLayout(gl_contentPane);
@@ -430,6 +408,7 @@ public class FrmDrawing extends JFrame {
 		btnG.add(tgbtnRectangle);
 		btnG.add(tgbtnCircle);
 		btnG.add(tgbtnDonut);
+		btnG.add(tgbtnHexagon);
 		
 		tgbtnPoint.setSelected(true);
 		rdbtnDrawShape.setSelected(true);
@@ -438,6 +417,7 @@ public class FrmDrawing extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				controller.selectFix();
 				if(rdbtnSelectShape.isSelected()) {
 					controller.selectShape(e);
 				}
@@ -458,6 +438,10 @@ public class FrmDrawing extends JFrame {
 	
 	
 	
+
+	public JToggleButton getTgbtnHexagon() {
+		return tgbtnHexagon;
+	}
 
 	public JToggleButton getTgbtnPoint() {
 		return tgbtnPoint;
@@ -521,6 +505,4 @@ public class FrmDrawing extends JFrame {
 	public void setFillColor(Color fillColor) {
 		this.fillColor = fillColor;
 	}
-	
-	
 }

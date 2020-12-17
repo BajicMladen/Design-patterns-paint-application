@@ -7,8 +7,10 @@ import java.util.Collections;
 
 import javax.swing.JOptionPane;
 
+import adapter.HexagonAdapter;
 import dlg.DlgDrawCircle;
 import dlg.DlgDrawDonut;
+import dlg.DlgDrawHex;
 import dlg.DlgDrawRec;
 import geometry.Circle;
 import geometry.Donut;
@@ -16,6 +18,12 @@ import geometry.Line;
 import geometry.Point;
 import geometry.Rectangle;
 import geometry.Shape;
+import hexagon.Hexagon;
+import modifyDlg.DlgCircleMod;
+import modifyDlg.DlgDonutMod;
+import modifyDlg.DlgHexMod;
+import modifyDlg.DlgLineMod;
+import modifyDlg.DlgPointMod;
 import modifyDlg.DlgRectMod;
 
 public class DrawingController {
@@ -34,6 +42,7 @@ public class DrawingController {
 
 	 //Logika iscrtavanja oblika!
 	 public void addShape(MouseEvent e,Color shapeColor, Color innerColor) {
+		 
 		 Point mouseClick = new Point(e.getX(),e.getY());
 		 if(frame.getTgbtnPoint().isSelected()) {
 			 Point point = new Point(e.getX(),e.getY(),shapeColor);
@@ -77,7 +86,18 @@ public class DrawingController {
 				 model.add(d);
 			 }
 			 
+		 }else if(frame.getTgbtnHexagon().isSelected()) {
+			 DlgDrawHex drawHex = new DlgDrawHex();
+			 drawHex.setVisible(true);
+			 
+			 if(drawHex.isFlag()) {
+				 Hexagon hexagon = new Hexagon(mouseClick.getX(),mouseClick.getY(),Integer.parseInt(drawHex.getTextRadius().getText()));
+				 HexagonAdapter hexagonAdapter=new HexagonAdapter(hexagon,shapeColor,innerColor);
+				 model.add(hexagonAdapter);
+			 }
 		 }
+		 
+		 frame.repaint();
 		 
 		 
 		 
@@ -105,6 +125,14 @@ public class DrawingController {
 		 frame.repaint();
 	 }
 	 
+	 public void selectFix() {
+			for(int i =0;i<model.getShapes().size();i++) {
+				selectedLast = -1;
+				model.getShapes().get(i).setSelected(false);
+				frame.repaint();
+			}
+	 }
+	 
 	 
 	 
 	 public void selectShape(MouseEvent e) {
@@ -117,6 +145,42 @@ public class DrawingController {
 				model.getShapes().get(selectedLast).setSelected(true);
 			}
 	 }
+	 
+	 
+	 public void modifyShape() {
+		 if(selectedLast== -1) {
+			 JOptionPane.showMessageDialog(null, "No figure is selected!","Error!", JOptionPane.ERROR_MESSAGE, null);
+				return;
+		 }
+		 Shape shapeToModify = model.getShapes().get(selectedLast);
+		 if(shapeToModify instanceof Point) {
+			 DlgPointMod modPoint = new DlgPointMod();
+			 modPoint.fillAll((Point)shapeToModify);
+			 modPoint.setVisible(true);
+		 }else if(shapeToModify instanceof Line) {
+			 DlgLineMod modLine = new DlgLineMod();
+			 modLine.fillAll((Line)shapeToModify);
+			 modLine.setVisible(true);
+		 }else if(shapeToModify instanceof Rectangle) {
+			 DlgRectMod modRec=new DlgRectMod();
+			modRec.fillAll((Rectangle)shapeToModify);
+			modRec.setVisible(true);
+		 }else if(shapeToModify instanceof Donut) {
+			 DlgDonutMod modDon=new DlgDonutMod();
+				modDon.fillAll((Donut)shapeToModify);
+				modDon.setVisible(true);
+		 }else if(shapeToModify instanceof Circle) {
+			 DlgCircleMod modCircle=new DlgCircleMod();
+				modCircle.fillAll((Circle)shapeToModify);
+				modCircle.setVisible(true);
+		 } else if(shapeToModify instanceof HexagonAdapter) {
+			 DlgHexMod modHex = new DlgHexMod();
+			 modHex.fillAll((HexagonAdapter)shapeToModify);
+			 modHex.setVisible(true);
+		 }
+		 frame.repaint();
+	 }
+	 
 	 
 	 
 	 

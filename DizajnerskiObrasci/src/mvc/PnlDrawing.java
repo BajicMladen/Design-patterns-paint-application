@@ -37,7 +37,7 @@ public class PnlDrawing extends JPanel {
 				it.next().draw(g);
 			}
 		}
-		repaint();
+		
 	}
 	
 	
