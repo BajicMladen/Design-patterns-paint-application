@@ -21,7 +21,7 @@ public class Line extends Shape {
 
 	public Line(Point startPoint, Point endPoint, Color color) {
 		this(startPoint, endPoint);
-		this.setColor(color);
+		super.setColor(color);
 	}
 
 	@Override

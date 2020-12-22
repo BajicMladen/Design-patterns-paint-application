@@ -3,6 +3,7 @@ package geometry;
 import java.awt.Color;
 import java.awt.Graphics;
 
+
 public class Circle extends SurfaceShape {
 
 	private int radius;
@@ -19,12 +20,12 @@ public class Circle extends SurfaceShape {
 
 	public Circle(Point center, int radius, Color color) {
 		this(center, radius);
-		setColor(color);
+		super.setColor(color);
 	}
 
 	public Circle(Point center, int radius, Color color, Color innerColor) {
 		this(center, radius, color);
-		setInnerColor(innerColor);
+		super.setInnerColor(innerColor);
 	}
 
 	@Override
@@ -54,11 +55,16 @@ public class Circle extends SurfaceShape {
 	@Override
 	public void selected(Graphics g) {
 		g.setColor(Color.BLUE);
-		g.drawRect(this.center.getX() - 3, this.center.getY() - 3, 6, 6);
-		g.drawRect(this.center.getX() - radius - 3, this.center.getY() - 3, 6, 6);
-		g.drawRect(this.center.getX() + radius - 3, this.center.getY() - 3, 6, 6);
-		g.drawRect(this.center.getX() - 3, this.center.getY() - radius - 3, 6, 6);
-		g.drawRect(this.center.getX() - 3, this.center.getY() + radius - 3, 6, 6);
+		center.selected(g);
+		Point left = new Point(center.getX() - radius, center.getY());
+		Point right = new Point(center.getX() + radius, center.getY());
+		Point up = new Point(center.getX(), center.getY() - radius);
+		Point down = new Point(center.getX(), center.getY() + radius);
+
+		left.selected(g);
+		right.selected(g);
+		up.selected(g);
+		down.selected(g);
 
 	}
 

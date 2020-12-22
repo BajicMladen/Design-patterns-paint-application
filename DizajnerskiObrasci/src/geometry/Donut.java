@@ -21,12 +21,12 @@ public class Donut extends Circle {
 
 	public Donut(Point center, int radius, int innerRadius, Color color) {
 		this(center, radius, innerRadius);
-		setColor(color);
+		super.setColor(color);
 	}
 
 	public Donut(Point center, int radius, int innerRadius, Color color, Color innerColor) {
 		this(center, radius, innerRadius, color);
-		setInnerColor(innerColor);
+		super.setInnerColor(innerColor);
 	}
 
 	@Override

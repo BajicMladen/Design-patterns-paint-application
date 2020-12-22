@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 import javax.swing.JOptionPane;
 
 import adapter.HexagonAdapter;
+import command.Command;
+import command.shapes.AddShapeCmd;
+import command.shapes.RemoveShapeCmd;
 import dlg.DlgDrawCircle;
 import dlg.DlgDrawDonut;
 import dlg.DlgDrawHex;
@@ -18,6 +22,7 @@ import geometry.Line;
 import geometry.Point;
 import geometry.Rectangle;
 import geometry.Shape;
+import geometry.SurfaceShape;
 import hexagon.Hexagon;
 import modifyDlg.DlgCircleMod;
 import modifyDlg.DlgDonutMod;
@@ -27,6 +32,8 @@ import modifyDlg.DlgPointMod;
 import modifyDlg.DlgRectMod;
 
 public class DrawingController {
+	
+	private Stack<Command> undoRedoStack = new Stack<>();
 	
 	private DrawingModel model;
 	 private FrmDrawing frame;
@@ -47,7 +54,8 @@ public class DrawingController {
 		 if(frame.getTgbtnPoint().isSelected()) {
 			 Point point = new Point(e.getX(),e.getY(),shapeColor);
 			 
-			 model.add(point);
+			 addShapesToStack(new AddShapeCmd(model, point));
+			
 		 }
 		 else if(frame.tgbtnLine.isSelected()) {
 			 if(pointOne == null) {
@@ -56,7 +64,8 @@ public class DrawingController {
 				 Point pointTwo = new Point(e.getX(),e.getY());
 				 Line line = new Line(pointOne,pointTwo,shapeColor);
 				 pointOne=null;
-				 model.add(line);
+				 
+				addShapesToStack(new AddShapeCmd(model, line));
 			 }
 		 }else if(frame.getTgbtnRectangle().isSelected()) {
 			 DlgDrawRec drawRec = new DlgDrawRec();
@@ -64,8 +73,9 @@ public class DrawingController {
 			 
 			if(drawRec.isFlag()) { 	 
 			 Rectangle rc=new Rectangle(mouseClick,Integer.parseInt(drawRec.getTextWidth().getText()),
-			Integer.parseInt(drawRec.getTextHeight().getText()),shapeColor,innerColor);		 
-			 model.add(rc);
+			Integer.parseInt(drawRec.getTextHeight().getText()),shapeColor,innerColor);		
+			 
+			 addShapesToStack(new AddShapeCmd(model,rc));
 			}
 			 
 		 }else if(frame.tgbtnCircle.isSelected()) {
@@ -74,7 +84,8 @@ public class DrawingController {
 			 
 			 if(drawCircle.isFlag()) {
 				 Circle c=new Circle(mouseClick,Integer.parseInt(drawCircle.getTextRadius().getText()),shapeColor,innerColor);
-				 model.add(c);
+				 
+				 addShapesToStack(new AddShapeCmd(model,c));
 			 }
 			 
 		 }else if(frame.getTgbtnDonut().isSelected()) {
@@ -83,7 +94,8 @@ public class DrawingController {
 			 
 			 if(drawDonut.isFlag1()) {
 				 Donut d = new Donut(mouseClick,Integer.parseInt(drawDonut.getTextRadius().getText()),Integer.parseInt(drawDonut.getTextInnerRadius().getText()),shapeColor,innerColor);
-				 model.add(d);
+				
+				 addShapesToStack(new AddShapeCmd(model,d));
 			 }
 			 
 		 }else if(frame.getTgbtnHexagon().isSelected()) {
@@ -92,8 +104,9 @@ public class DrawingController {
 			 
 			 if(drawHex.isFlag()) {
 				 Hexagon hexagon = new Hexagon(mouseClick.getX(),mouseClick.getY(),Integer.parseInt(drawHex.getTextRadius().getText()));
-				 HexagonAdapter hexagonAdapter=new HexagonAdapter(hexagon,shapeColor,innerColor);
-				 model.add(hexagonAdapter);
+				 SurfaceShape hexagonAdapter=new HexagonAdapter(hexagon,shapeColor,innerColor);
+				
+				 addShapesToStack(new AddShapeCmd(model,hexagonAdapter));
 			 }
 		 }
 		 
@@ -113,7 +126,11 @@ public class DrawingController {
 		 int option = JOptionPane.showConfirmDialog(null,
 				 "Are you sure you want to delete selected object/s?", "Delete", JOptionPane.YES_NO_OPTION);
 			if (option == JOptionPane.YES_OPTION) {
-		 	model.getShapes().remove(selectedLast);
+		 	
+		 	Shape s = model.getShapes().get(selectedLast);
+		 	
+		 	addShapesToStack(new RemoveShapeCmd(model,s));
+		 	
 			frame.repaint();
 			selectedLast=-1;
 			}
@@ -181,6 +198,10 @@ public class DrawingController {
 		 frame.repaint();
 	 }
 	 
+	 
+	 public void addShapesToStack(Command c) {
+		 c.execute();
+	 }
 	 
 	 
 	 

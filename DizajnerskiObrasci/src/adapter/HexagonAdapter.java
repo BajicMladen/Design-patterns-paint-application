@@ -14,7 +14,7 @@ public class HexagonAdapter extends SurfaceShape{
 		this.hexagon=h;
 	}
 	 
-	 public HexagonAdapter(Hexagon h,Color innerColor,Color color) {
+	 public HexagonAdapter(Hexagon h,Color color,Color innerColor) {
 			this.hexagon=h;
 			this.setColor(color);
 			this.setInnerColor(innerColor);

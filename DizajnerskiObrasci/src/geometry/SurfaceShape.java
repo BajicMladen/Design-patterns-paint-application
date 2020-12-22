@@ -5,7 +5,10 @@ import java.awt.Graphics;
 
 public abstract class SurfaceShape extends Shape {
 
+	//Inseide color of rectangel,circle,Donut and Hexagon
 	private Color innerColor;
+	
+	
 
 	public abstract void fill(Graphics g);
 
