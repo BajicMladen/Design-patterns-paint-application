@@ -35,6 +35,9 @@ public class DlgCircleMod extends JDialog {
 	private Color color;
 	private Color innerColor;
 	private JTextField textRadius;
+	
+	private int x,y,radius;
+	private boolean flag;
 
 	/**
 	 * Launch the application.
@@ -181,18 +184,11 @@ public class DlgCircleMod extends JDialog {
 							return;
 							}
 						 
-							int x = Integer.parseInt(textCenterX.getText());
-							int y = Integer.parseInt(textCenterY.getText());
-							int radius = Integer.parseInt(textRadius.getText());
-							
-							circle.getCenter().setX(x);
-							circle.getCenter().setY(y);
-							circle.setRadius(radius);
-							circle.setColor(color);
-							circle.setInnerColor(innerColor);
-							dispose();
-						
-						
+							 x = Integer.parseInt(textCenterX.getText());
+							 y = Integer.parseInt(textCenterY.getText());
+							 radius = Integer.parseInt(textRadius.getText());
+							 flag=true;
+							dispose();												
 					}
 				});
 				btnModify.setActionCommand("OK");
@@ -231,5 +227,31 @@ public class DlgCircleMod extends JDialog {
         	throw new NumberFormatException();
         }
 	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public Color getInnerColor() {
+		return innerColor;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+	
+	
 
 }

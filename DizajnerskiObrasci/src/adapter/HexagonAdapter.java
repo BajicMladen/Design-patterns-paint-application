@@ -6,9 +6,13 @@ import java.awt.Graphics;
 import geometry.SurfaceShape;
 import hexagon.Hexagon;
 
-public class HexagonAdapter extends SurfaceShape{
+public class HexagonAdapter extends SurfaceShape implements Cloneable{
 	
 	private Hexagon hexagon;
+	
+	 public HexagonAdapter() {
+			
+		}
 	
 	 public HexagonAdapter(Hexagon h) {
 		this.hexagon=h;
@@ -50,8 +54,22 @@ public class HexagonAdapter extends SurfaceShape{
 		hexagon.setSelected(selected);
 		super.setSelected(selected);
 	}
+	
+	
+	
 
 	
+	@Override
+	public HexagonAdapter clone(){
+		Hexagon hexagon = new Hexagon(this.getX(), this.getY(), this.getR());
+		HexagonAdapter hexClone = new HexagonAdapter(hexagon);
+		hexClone.setColor(this.getColor());
+		hexClone.setInnerColor(this.getInnerColor());
+		
+		return hexClone;
+		
+	}
+
 	public void setInnerColor(Color innerColor) {
 		hexagon.setAreaColor(innerColor);
 	}

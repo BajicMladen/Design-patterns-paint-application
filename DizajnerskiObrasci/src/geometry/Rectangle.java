@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 
-public class Rectangle extends SurfaceShape {
+public class Rectangle extends SurfaceShape  implements Cloneable{
 
 	private Point upperLeftPoint;
 	private int height;
@@ -73,6 +73,21 @@ public class Rectangle extends SurfaceShape {
 		g.drawRect(getUpperLeftPoint().getX() - 3, getUpperLeftPoint().getY() + getHeight() - 3, 6, 6);
 		g.drawRect(getUpperLeftPoint().getX() + getWidth() - 3, getUpperLeftPoint().getY() + getHeight() - 3, 6, 6);
 
+	}
+	
+	
+
+	@Override
+	public Rectangle clone(){
+		
+		Rectangle rectangle = new Rectangle();
+		rectangle.setUpperLeftPoint(getUpperLeftPoint());
+		rectangle.setHeight(getHeight());
+		rectangle.setWidth(getWidth());
+		rectangle.setColor(getColor());
+		rectangle.setInnerColor(getInnerColor());
+		
+		return rectangle;
 	}
 
 	public Point getUpperLeftPoint() {

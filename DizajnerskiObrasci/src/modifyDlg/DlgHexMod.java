@@ -36,6 +36,9 @@ public class DlgHexMod extends JDialog {
 	private Color color;
 	private Color innerColor;
 	private JTextField textRadius;
+	
+	private int x,y,radius;
+	private boolean flag;
 
 	/**
 	 * Launch the application.
@@ -182,15 +185,11 @@ public class DlgHexMod extends JDialog {
 							return;
 							}
 						 
-							int x = Integer.parseInt(textCenterX.getText());
-							int y = Integer.parseInt(textCenterY.getText());
-							int radius = Integer.parseInt(textRadius.getText());
-							
-							hexagonAdapter.setX(x);
-							hexagonAdapter.setY(y);
-							hexagonAdapter.setR(radius);
-							hexagonAdapter.setColor(color);
-							hexagonAdapter.setInnerColor(innerColor);
+							 x = Integer.parseInt(textCenterX.getText());
+							 y = Integer.parseInt(textCenterY.getText());
+							 radius = Integer.parseInt(textRadius.getText());
+							 flag=true;
+						
 							dispose();
 						
 						
@@ -232,5 +231,31 @@ public class DlgHexMod extends JDialog {
         	throw new NumberFormatException();
         }
 	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public Color getInnerColor() {
+		return innerColor;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+	
+	
 
 }

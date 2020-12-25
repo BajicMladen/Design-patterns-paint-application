@@ -74,7 +74,10 @@ public class Point extends Shape implements Cloneable{
 
 	@Override
 	public Point clone(){
-	Point pointClone = new Point(getX(),getY(),getColor());
+	Point pointClone = new Point();
+	pointClone.setX(getX());
+	pointClone.setY(getY());
+	pointClone.setColor(getColor());
 		return pointClone;
 	}
 

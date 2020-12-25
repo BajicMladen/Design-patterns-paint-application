@@ -36,6 +36,11 @@ public class DlgDonutMod extends JDialog {
 	private Color color;
 	private Color innerColor;
 	private Donut donut;
+	
+	private boolean flag;
+	private int x,y,radius,innerRadius;
+	
+	
 
 	/**
 	 * Launch the application.
@@ -195,16 +200,12 @@ public class DlgDonutMod extends JDialog {
 							JOptionPane.showMessageDialog(null, "Inner radius can not be greater than the outer radius!", "ERROR", JOptionPane.ERROR_MESSAGE, null);
 							return;
 						 } else {
-							int x = Integer.parseInt(textCenterX.getText());
-							int y = Integer.parseInt(textCenterY.getText());
-							int innerRadius = Integer.parseInt(textInnerRadius.getText());
-							int outerRadius = Integer.parseInt(textRadius.getText());
-							
-							donut.setCenter(new Point(x,y));
-							donut.setRadius(outerRadius);
-							donut.setInnerRadius(innerRadius);
-							donut.setColor(color);
-							donut.setInnerColor(innerColor);
+							 x = Integer.parseInt(textCenterX.getText());
+							 y = Integer.parseInt(textCenterY.getText());
+							innerRadius = Integer.parseInt(textInnerRadius.getText());
+							radius = Integer.parseInt(textRadius.getText());
+							flag=true;
+						
 							dispose();
 						}
 						
@@ -248,5 +249,35 @@ public class DlgDonutMod extends JDialog {
         	throw new NumberFormatException();
         }
 	}
+
+	public Color getInnerColor() {
+		return innerColor;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public int getInnerRadius() {
+		return innerRadius;
+	}
+	
+	
 
 }

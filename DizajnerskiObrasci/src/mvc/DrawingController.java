@@ -12,6 +12,12 @@ import adapter.HexagonAdapter;
 import command.Command;
 import command.shapes.AddShapeCmd;
 import command.shapes.RemoveShapeCmd;
+import command.shapes.UpdateCircleCmd;
+import command.shapes.UpdateDonutCmd;
+import command.shapes.UpdateHexagonCmd;
+import command.shapes.UpdateLineCmd;
+import command.shapes.UpdatePointCmd;
+import command.shapes.UpdateRectangleCmd;
 import dlg.DlgDrawCircle;
 import dlg.DlgDrawDonut;
 import dlg.DlgDrawHex;
@@ -174,26 +180,58 @@ public class DrawingController {
 			 DlgPointMod modPoint = new DlgPointMod();
 			 modPoint.fillAll((Point)shapeToModify);
 			 modPoint.setVisible(true);
+			 if(modPoint.isFlag()==true) {
+				 Point point = new Point(modPoint.getX(),modPoint.getY(),modPoint.getColor());
+				 addShapesToStack(new UpdatePointCmd((Point)shapeToModify,point));
+			 }
 		 }else if(shapeToModify instanceof Line) {
 			 DlgLineMod modLine = new DlgLineMod();
 			 modLine.fillAll((Line)shapeToModify);
 			 modLine.setVisible(true);
+			 if(modLine.isFlag()==true) {
+			 Line line =new Line(new Point(modLine.getStartX(),modLine.getStartY()),new Point(modLine.getEndX(),modLine.getEndY()),modLine.getColor());
+			 addShapesToStack(new UpdateLineCmd((Line)shapeToModify, line));
+			 }
+			 
 		 }else if(shapeToModify instanceof Rectangle) {
 			 DlgRectMod modRec=new DlgRectMod();
 			modRec.fillAll((Rectangle)shapeToModify);
 			modRec.setVisible(true);
+			if(modRec.isFlag()==true) {
+				Rectangle rectangle = new Rectangle(new Point(modRec.getX(),modRec.getY()),modRec.getHeightRec(),modRec.getWidthRec(),modRec.getColor(),modRec.getInnerColor());
+				addShapesToStack(new UpdateRectangleCmd((Rectangle)shapeToModify, rectangle));
+			}
+			
+			
 		 }else if(shapeToModify instanceof Donut) {
 			 DlgDonutMod modDon=new DlgDonutMod();
 				modDon.fillAll((Donut)shapeToModify);
 				modDon.setVisible(true);
+				if(modDon.isFlag()==true) {
+					Donut donut = new Donut(new Point(modDon.getX(),modDon.getY()),modDon.getRadius(),modDon.getInnerRadius(),modDon.getColor(),modDon.getInnerColor());
+					addShapesToStack(new UpdateDonutCmd((Donut)shapeToModify,donut));
+				}
+				
+				
 		 }else if(shapeToModify instanceof Circle) {
 			 DlgCircleMod modCircle=new DlgCircleMod();
 				modCircle.fillAll((Circle)shapeToModify);
 				modCircle.setVisible(true);
+				if(modCircle.isFlag()==true) {
+					Circle circle = new Circle(new Point(modCircle.getX(),modCircle.getY()),modCircle.getRadius(),modCircle.getColor(),modCircle.getInnerColor());
+					addShapesToStack(new UpdateCircleCmd((Circle)shapeToModify,circle));
+				 }
+				
+				
 		 } else if(shapeToModify instanceof HexagonAdapter) {
 			 DlgHexMod modHex = new DlgHexMod();
 			 modHex.fillAll((HexagonAdapter)shapeToModify);
 			 modHex.setVisible(true);
+			 if(modHex.isFlag()==true) {
+				 Hexagon hexagon = new Hexagon(modHex.getX(), modHex.getY(), modHex.getRadius());
+				 HexagonAdapter hexagonAdapter = new HexagonAdapter(hexagon,modHex.getColor(),modHex.getInnerColor());
+				 addShapesToStack(new UpdateHexagonCmd((HexagonAdapter)shapeToModify, hexagonAdapter));
+			 }
 		 }
 		 frame.repaint();
 	 }

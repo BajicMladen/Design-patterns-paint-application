@@ -16,14 +16,24 @@ public class UpdatePointCmd implements Command {
 
 	@Override
 	public void execute() {
+		
 		original=oldState.clone();
-		oldState=newState.clone();
+		
+		
+		
+		oldState.setX(newState.getX());
+		oldState.setY(newState.getY());
+		oldState.setColor(newState.getColor());
+		
 
 	}
 
 	@Override
 	public void unexecute() {
-		oldState=original.clone();
+		
+		oldState.setX(original.getX());
+		oldState.setY(original.getY());
+		oldState.setColor(original.getColor());
 
 	}
 

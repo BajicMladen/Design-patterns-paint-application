@@ -35,7 +35,9 @@ public class DlgRectMod extends JDialog {
 	private Color color;
 	private Color innerColor;
 	private Rectangle rec;
-	private boolean flag;
+	private boolean flag=false;
+	
+	private int x,y,heightRec,widthRec;
 
 	/**
 	 * Launch the application.
@@ -190,7 +192,7 @@ public class DlgRectMod extends JDialog {
 				btnModify.setFont(new Font("Tahoma", Font.PLAIN, 13));
 				btnModify.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						flag=true;
+						
 						try {
 							validation(textRecX.getText(),textRecY.getText(),textWidth.getText(),textHeight.getText());
 						} catch(NumberFormatException ec) {
@@ -205,20 +207,14 @@ public class DlgRectMod extends JDialog {
 							JOptionPane.showMessageDialog(null, "Radius can not be 0 or less!", "ERROR", JOptionPane.ERROR_MESSAGE, null);
 							return;
 							}
-						
-							int x = Integer.parseInt(textRecX.getText());
-							int y = Integer.parseInt(textRecY.getText());
-							int width = Integer.parseInt(textWidth.getText());
-							int height = Integer.parseInt(textHeight.getText());
-							if(flag) {
-								rec.getUpperLeftPoint().setX(x);;
-								rec.getUpperLeftPoint().setY(y);;
-								rec.setWidth(width);
-								rec.setHeight(height);
-								rec.setColor(color);
-								rec.setInnerColor(innerColor);
-								dispose();
-								}
+							flag=true;
+							 x = Integer.parseInt(textRecX.getText());
+							 y = Integer.parseInt(textRecY.getText());
+							 widthRec = Integer.parseInt(textWidth.getText());
+							 heightRec = Integer.parseInt(textHeight.getText());
+							
+							 dispose();
+								
 						
 					}
 				});
@@ -250,6 +246,7 @@ public class DlgRectMod extends JDialog {
 		color = rec.getInnerColor();
 		innerColor = rec.getColor();
 	}
+	
 	public void validation(String x, String y, String width, String height) {
 		String supp1 ="^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$";
 		if(x.matches("") || y.matches("") || width.matches("") || height.matches("") ) {
@@ -258,5 +255,37 @@ public class DlgRectMod extends JDialog {
         	throw new NumberFormatException();
         }
 	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public Color getInnerColor() {
+		return innerColor;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getHeightRec() {
+		return heightRec;
+	}
+
+	public int getWidthRec() {
+		return widthRec;
+	}
+	
+	
+	
+		
 
 }

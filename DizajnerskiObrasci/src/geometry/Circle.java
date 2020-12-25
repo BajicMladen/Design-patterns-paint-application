@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 
-public class Circle extends SurfaceShape {
+public class Circle extends SurfaceShape implements Cloneable{
 
 	private int radius;
 	private Point center;
@@ -66,6 +66,21 @@ public class Circle extends SurfaceShape {
 		up.selected(g);
 		down.selected(g);
 
+	}
+	
+	
+	
+
+	@Override
+	 public Circle clone(){
+		
+		Circle circleClone = new Circle();
+		circleClone.setCenter(getCenter());
+		circleClone.setRadius(getRadius());
+		circleClone.setColor(getColor());
+		circleClone.setInnerColor(getInnerColor());
+		
+		return circleClone;
 	}
 
 	public int getRadius() {

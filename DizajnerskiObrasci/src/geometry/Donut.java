@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import geometry.Line;
 import geometry.Point;
 
-public class Donut extends Circle {
+public class Donut extends Circle implements Cloneable{
 
 	private int innerRadius;
 
@@ -63,6 +63,22 @@ public class Donut extends Circle {
 				new Point(super.getCenter().getX() + innerRadius, super.getCenter().getY())).selected(g);
 		new Line(new Point(super.getCenter().getX(), super.getCenter().getY() - innerRadius),
 				new Point(super.getCenter().getX(), super.getCenter().getY() + innerRadius)).selected(g);
+	}
+	
+	
+	
+
+	@Override
+	public Donut clone() {
+		Donut donutClone = new Donut();
+		donutClone.setCenter(getCenter());
+		donutClone.setRadius(getRadius());
+		donutClone.setInnerRadius(getInnerRadius());
+		donutClone.setColor(getColor());
+		donutClone.setInnerColor(getInnerColor());
+		
+		return donutClone; 
+		
 	}
 
 	public int getInnerRadius() {

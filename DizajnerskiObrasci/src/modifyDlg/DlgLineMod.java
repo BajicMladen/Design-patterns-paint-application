@@ -34,6 +34,11 @@ public class DlgLineMod extends JDialog {
 	private JTextField textColor;
 	private Color color;
 	private Line l;
+	private int startX;
+	private int startY;
+	private int endX;
+	private int endY;
+	private Boolean flag=false;
 
 	/**
 	 * Launch the application.
@@ -164,13 +169,13 @@ public class DlgLineMod extends JDialog {
 							return;
 						}
 						try {
-							int startX = Integer.parseInt(textStartPointX.getText());
-							int startY = Integer.parseInt(textStartPointY.getText());
-							int endX = Integer.parseInt(textEndPointX.getText());
-							int endY = Integer.parseInt(textEndPointY.getText());
-							l.setStartPoint(new Point(startX,startY));
-							l.setEndPoint(new Point(endX,endY));
-							l.setColor(color);
+							 startX = Integer.parseInt(textStartPointX.getText());
+							 startY = Integer.parseInt(textStartPointY.getText());
+							 endX = Integer.parseInt(textEndPointX.getText());
+							 endY = Integer.parseInt(textEndPointY.getText());
+							 
+							 flag=true;
+						
 							dispose();
 						} catch(NumberFormatException ec) {
 							JOptionPane.showMessageDialog(null, "Incorrect data type inserted,please insert again!", "Error", JOptionPane.ERROR_MESSAGE, null);
@@ -203,4 +208,30 @@ public class DlgLineMod extends JDialog {
 		color = l.getColor();
 		textColor.setBackground(l.getColor());
 	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public int getStartX() {
+		return startX;
+	}
+
+	public int getStartY() {
+		return startY;
+	}
+
+	public int getEndX() {
+		return endX;
+	}
+
+	public int getEndY() {
+		return endY;
+	}
+
+	public Boolean isFlag() {
+		return flag;
+	}
+	
+	
 }

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import geometry.Point;
 
-public class Line extends Shape {
+public class Line extends Shape implements Cloneable{
 
 	private Point startPoint;
 	private Point endPoint;
@@ -50,6 +50,21 @@ public class Line extends Shape {
 		middleOfLine().selected(g);
 
 	}
+	
+	
+	
+	
+
+	@Override
+	public Line clone(){
+		Line lineClone = new Line();
+		lineClone.setStartPoint(new Point(startPoint.getX(),startPoint.getY()));
+		lineClone.setEndPoint(new Point(endPoint.getX(),endPoint.getY()));
+		lineClone.setColor(getColor());
+		
+		return lineClone;
+	}
+	
 
 	public Point middleOfLine() {
 		int middleByX = (this.startPoint.getX() + this.endPoint.getX()) / 2;
@@ -57,6 +72,10 @@ public class Line extends Shape {
 		Point p = new Point(middleByX, middleByY);
 		return p;
 	}
+	
+	
+	
+	
 
 	public double length() {
 		return startPoint.distance(endPoint.getX(), endPoint.getY());

@@ -31,6 +31,9 @@ public class DlgPointMod extends JDialog {
 	private Color color;
 	private JTextField textColor;
 	private Point p;
+	int x,y;
+	
+	boolean flag=false;
 
 	/**
 	 * Launch the application.
@@ -140,11 +143,10 @@ public class DlgPointMod extends JDialog {
 							return;
 						}
 						try {
-							int x = Integer.parseInt(textXCor.getText());
-							int y = Integer.parseInt(textYCor.getText());
-							p.setX(x);
-							p.setY(y);
-							p.setColor(color);
+							x = Integer.parseInt(textXCor.getText());
+							y = Integer.parseInt(textYCor.getText());
+							
+							flag = true;
 							dispose();
 						} catch(NumberFormatException ece) {
 							JOptionPane.showMessageDialog(null, "Incorrect data type inserted, please insert data again!", "ERROR", JOptionPane.ERROR_MESSAGE, null);
@@ -176,6 +178,32 @@ public class DlgPointMod extends JDialog {
 		color = p.getColor();
 		textColor.setBackground(color);
 		}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+	
+
 	
 
 }
