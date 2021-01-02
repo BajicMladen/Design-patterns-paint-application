@@ -74,9 +74,6 @@ public class FrmDrawing extends JFrame {
 	JToggleButton tgbtnHexagon;
 	
 	
-	JRadioButton rdbtnDrawShape;
-	JRadioButton rdbtnSelectShape;
-	
 	JButton btnSetBcColor;
 	JButton btnSetFillColor;
 	
@@ -84,6 +81,11 @@ public class FrmDrawing extends JFrame {
 	JButton btnDeleteAll;
 	JButton btnDelete;
 	
+	private JToggleButton tglbtnDraw;
+	private JToggleButton tglbtnSelect;
+	
+	private JButton btnUndo;
+	private JButton btnRedo;
 	
 
 	/**
@@ -137,21 +139,21 @@ public class FrmDrawing extends JFrame {
 		GroupLayout gl_bColorPanel = new GroupLayout(bColorPanel);
 		gl_bColorPanel.setHorizontalGroup(
 			gl_bColorPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_bColorPanel.createSequentialGroup()
+				.addGroup(gl_bColorPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_bColorPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(textBcColor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSetBcColor, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
-					.addContainerGap())
+					.addComponent(btnSetBcColor, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(textBcColor, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+					.addGap(9))
 		);
 		gl_bColorPanel.setVerticalGroup(
 			gl_bColorPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_bColorPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(btnSetBcColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(textBcColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(20, Short.MAX_VALUE))
+					.addGroup(gl_bColorPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnSetBcColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textBcColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(45, Short.MAX_VALUE))
 		);
 		bColorPanel.setLayout(gl_bColorPanel);
 		
@@ -183,24 +185,21 @@ public class FrmDrawing extends JFrame {
 		
 		GroupLayout gl_fColorPanel = new GroupLayout(fColorPanel);
 		gl_fColorPanel.setHorizontalGroup(
-			gl_fColorPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 126, Short.MAX_VALUE)
-				.addGroup(Alignment.TRAILING, gl_fColorPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_fColorPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(textFillColor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSetFillColor, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
-					.addContainerGap())
+			gl_fColorPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_fColorPanel.createSequentialGroup()
+					.addComponent(btnSetFillColor, 0, 0, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(textFillColor, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+					.addGap(2))
 		);
 		gl_fColorPanel.setVerticalGroup(
 			gl_fColorPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 141, Short.MAX_VALUE)
 				.addGroup(gl_fColorPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(btnSetFillColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(textFillColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(20, Short.MAX_VALUE))
+					.addGroup(gl_fColorPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnSetFillColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFillColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(52, Short.MAX_VALUE))
 		);
 		fColorPanel.setLayout(gl_fColorPanel);
 		
@@ -259,7 +258,48 @@ public class FrmDrawing extends JFrame {
 		);
 		actonPanel.setLayout(gl_actonPanel);
 		
-		JLabel lblDesignedByMladen = new JLabel("Designed by Mladen");
+		JPanel undoRedoPanel = new JPanel();
+		undoRedoPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "undo/redo", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		
+		btnUndo = new JButton("Undo");
+		btnUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btnUndo.isEnabled()) {
+				controller.undo();
+				}
+				
+			}
+		});
+		btnUndo.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		btnRedo = new JButton("Redo");
+		btnRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btnRedo.isEnabled()) {
+				controller.redo();
+				}
+			}
+		});
+		btnRedo.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		GroupLayout gl_undoRedoPanel = new GroupLayout(undoRedoPanel);
+		gl_undoRedoPanel.setHorizontalGroup(
+			gl_undoRedoPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_undoRedoPanel.createSequentialGroup()
+					.addContainerGap(24, Short.MAX_VALUE)
+					.addGroup(gl_undoRedoPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnRedo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnUndo, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_undoRedoPanel.setVerticalGroup(
+			gl_undoRedoPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_undoRedoPanel.createSequentialGroup()
+					.addComponent(btnUndo, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnRedo, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		undoRedoPanel.setLayout(gl_undoRedoPanel);
 		
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -268,83 +308,82 @@ public class FrmDrawing extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(ShapesBtnPanel, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addComponent(view, GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
+						.addComponent(ShapesBtnPanel, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
+						.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(18)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(modePanel, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(bColorPanel, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
-									.addComponent(fColorPanel, GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)))
-							.addContainerGap())
-						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblDesignedByMladen))))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(ShapesBtnPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(18)
-					.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
-					.addGap(19))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(fColorPanel, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
-					.addGap(52)
-					.addComponent(modePanel, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-					.addComponent(lblDesignedByMladen))
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addComponent(view, GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+							.addComponent(fColorPanel, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
+							.addGap(384))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(view, GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(undoRedoPanel, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+						.addComponent(modePanel, 0, 0, Short.MAX_VALUE))
 					.addContainerGap())
 		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(ShapesBtnPanel, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+							.addGap(18)
+							.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE)
+							.addGap(26))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(7)
+							.addComponent(modePanel, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(undoRedoPanel, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(377, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+								.addComponent(fColorPanel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(view, GroupLayout.PREFERRED_SIZE, 486, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
+		);
 		
-		rdbtnSelectShape = new JRadioButton("Select Shape");
-		rdbtnSelectShape.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		rdbtnSelectShape.setForeground(Color.BLUE);
-		rdbtnSelectShape.addItemListener(new ItemListener() {
-			@SuppressWarnings("deprecation")
-			public void itemStateChanged(ItemEvent e) {
-				if(e.getStateChange() == ItemEvent.SELECTED) {
-					view.setCursor(new Cursor(HAND_CURSOR));
-				} else {
-					view.setCursor(new Cursor(DEFAULT_CURSOR));
-				}
+		tglbtnDraw = new JToggleButton("Draw");
+		tglbtnDraw.setSelected(true);
+		
+		tglbtnDraw.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		
+		tglbtnSelect = new JToggleButton("Select");
+		tglbtnSelect.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {			
+						tglbtnSelect.setSelected(true);		
 			}
 		});
+		tglbtnSelect.setSelected(true);
 		
-		rdbtnDrawShape = new JRadioButton(" Draw Shape");
-		rdbtnDrawShape.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		rdbtnDrawShape.setForeground(Color.RED);
+		tglbtnSelect.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
 		GroupLayout gl_modePanel = new GroupLayout(modePanel);
 		gl_modePanel.setHorizontalGroup(
-			gl_modePanel.createParallelGroup(Alignment.LEADING)
+			gl_modePanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_modePanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(rdbtnSelectShape)
-						.addComponent(rdbtnDrawShape))
-					.addContainerGap(17, Short.MAX_VALUE))
+					.addContainerGap(13, Short.MAX_VALUE)
+					.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(tglbtnSelect, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(tglbtnDraw, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
+					.addContainerGap())
 		);
-		btnG1.add(rdbtnDrawShape);
-		btnG1.add(rdbtnSelectShape);
 		gl_modePanel.setVerticalGroup(
 			gl_modePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_modePanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(rdbtnSelectShape, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.addComponent(tglbtnDraw, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(rdbtnDrawShape, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-					.addContainerGap())
+					.addComponent(tglbtnSelect, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		modePanel.setLayout(gl_modePanel);
 		
@@ -410,19 +449,22 @@ public class FrmDrawing extends JFrame {
 		btnG.add(tgbtnDonut);
 		btnG.add(tgbtnHexagon);
 		
+		btnG1.add(tglbtnDraw);
+		btnG1.add(tglbtnSelect);
+		
 		tgbtnPoint.setSelected(true);
-		rdbtnDrawShape.setSelected(true);
 		
 		view.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.selectFix();
-				if(rdbtnSelectShape.isSelected()) {
+				
+				if(tglbtnSelect.isSelected()) {
+					
 					controller.selectShape(e);
 				}
 				
-				if(rdbtnDrawShape.isSelected()) {
+				if(tglbtnDraw.isSelected()) {
 					controller.addShape(e,shapeColor,fillColor);
 				}
 				
@@ -505,4 +547,41 @@ public class FrmDrawing extends JFrame {
 	public void setFillColor(Color fillColor) {
 		this.fillColor = fillColor;
 	}
+
+
+
+
+	public JButton getBtnModify() {
+		return btnModify;
+	}
+
+
+
+
+	public JButton getBtnDeleteAll() {
+		return btnDeleteAll;
+	}
+
+
+
+
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+
+
+
+
+	public JButton getBtnUndo() {
+		return btnUndo;
+	}
+
+
+
+
+	public JButton getBtnRedo() {
+		return btnRedo;
+	}
+	
+	
 }

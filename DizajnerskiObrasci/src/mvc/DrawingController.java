@@ -2,14 +2,17 @@ package mvc;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
 
 import adapter.HexagonAdapter;
 import command.Command;
+import command.select.SelectShapeCmd;
 import command.shapes.AddShapeCmd;
 import command.shapes.RemoveShapeCmd;
 import command.shapes.UpdateCircleCmd;
@@ -40,11 +43,11 @@ import modifyDlg.DlgRectMod;
 public class DrawingController {
 	
 	private Stack<Command> undoRedoStack = new Stack<>();
+	private int undoRedoStackPointer=-1;
 	
 	private DrawingModel model;
 	 private FrmDrawing frame;
 	 
-	 private int selectedLast = -1;
 	 private Point pointOne;
 
 
@@ -124,58 +127,94 @@ public class DrawingController {
 	 
 	 
 	 public void deleteShape() {
-		 if(selectedLast==-1) {
-			 JOptionPane.showMessageDialog(null, "No figure is selected!","Error!", JOptionPane.ERROR_MESSAGE, null);
-			 return;
-		 }
-		 if(model.getShapes().size()>selectedLast) {
-		 int option = JOptionPane.showConfirmDialog(null,
-				 "Are you sure you want to delete selected object/s?", "Delete", JOptionPane.YES_NO_OPTION);
-			if (option == JOptionPane.YES_OPTION) {
-		 	
-		 	Shape s = model.getShapes().get(selectedLast);
-		 	
-		 	addShapesToStack(new RemoveShapeCmd(model,s));
-		 	
-			frame.repaint();
-			selectedLast=-1;
+		ArrayList<Shape> shapes = new ArrayList<>();
+		
+		if(frame.getBtnDelete().isEnabled()) {
+			if(JOptionPane.showConfirmDialog(null, "Are you sure you want to remove selected shape?", "Warning!", JOptionPane.YES_NO_OPTION) == 0) {
+		
+				for(Shape shape :model.getShapes()) {
+					if(shape.isSelected()) {
+						shapes.add(shape);
+					}
+				}
+				
+				for(Shape shape : shapes) {
+					if(model.getShapes().contains(shape));
+					addShapesToStack(new RemoveShapeCmd(model, shape));
+				}
+				
+				frame.repaint();
 			}
+		}
+		 
+	 }
+	 
+	 public void undo() {
+		 
+		 undoRedoStack.get(undoRedoStackPointer).unexecute();
+		 undoRedoStackPointer--;
+		 frame.repaint();
+		 frame.getBtnRedo().setEnabled(true);
+		 if (undoRedoStackPointer==-1) frame.getBtnUndo().setEnabled(false);
+	 }
+	 
+	 public void redo() {
+		 undoRedoStackPointer++;
+		 undoRedoStack.get(undoRedoStackPointer).execute();
+		 frame.repaint();
+		 frame.getBtnUndo().setEnabled(true);
+		 
+		 if(undoRedoStackPointer+1>=undoRedoStack.size()) {
+			 frame.getBtnRedo().setEnabled(false);
 		 }
 	 }
+	 
+	
+	 
+	 
 	 
 	 public void deleteAll() {
 		 model.getShapes().clear();
 		 frame.repaint();
 	 }
 	 
-	 public void selectFix() {
-			for(int i =0;i<model.getShapes().size();i++) {
-				selectedLast = -1;
-				model.getShapes().get(i).setSelected(false);
-				frame.repaint();
-			}
-	 }
+	
 	 
 	 
 	 
 	 public void selectShape(MouseEvent e) {
-		 for(int i=0;i<model.getShapes().size();i++) {
-				if(model.getShapes().get(i).contains(e.getX(), e.getY())) {
-					selectedLast=i;
+		
+		 for(int i=model.getShapes().size()-1;i>=0;i--) {
+			 
+			 if(model.get(i).contains(e.getX(), e.getY())) {
+				 
+				if(model.get(i).isSelected() == false) {
+				
+					 addShapesToStack(new SelectShapeCmd(model.get(i)));
+					 frame.repaint();
+					 break;
+				}else{
+					SelectShapeCmd selectShapeCmd = new SelectShapeCmd(model.get(i));
+					selectShapeCmd.unexecute();
+					frame.repaint();
+					break;
 				}
-			}
-			if(selectedLast!=-1) {
-				model.getShapes().get(selectedLast).setSelected(true);
-			}
+			 }
+		 }
+		
 	 }
 	 
 	 
+		
+		
+		
+	 
 	 public void modifyShape() {
-		 if(selectedLast== -1) {
-			 JOptionPane.showMessageDialog(null, "No figure is selected!","Error!", JOptionPane.ERROR_MESSAGE, null);
-				return;
-		 }
-		 Shape shapeToModify = model.getShapes().get(selectedLast);
+		 for(Shape shapeToModify: model.getShapes()) {
+		 
+		if(shapeToModify.isSelected())
+		{
+		 
 		 if(shapeToModify instanceof Point) {
 			 DlgPointMod modPoint = new DlgPointMod();
 			 modPoint.fillAll((Point)shapeToModify);
@@ -234,11 +273,18 @@ public class DrawingController {
 			 }
 		 }
 		 frame.repaint();
+			}
+		 }
 	 }
 	 
 	 
+	 
+	 
 	 public void addShapesToStack(Command c) {
+		 
+		 undoRedoStack.push(c);
 		 c.execute();
+		 undoRedoStackPointer++;
 	 }
 	 
 	 

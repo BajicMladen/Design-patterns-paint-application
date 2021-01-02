@@ -22,7 +22,7 @@ public class AddShapeCmd implements Command {
 
 	@Override
 	public void unexecute() {
-		model.add(shape);
+		model.remove(shape);
 
 	}
 

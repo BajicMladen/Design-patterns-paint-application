@@ -6,8 +6,9 @@ import geometry.Shape;
 import mvc.DrawingModel;
 
 public class RemoveShapeCmd implements Command {
-	DrawingModel model;
-	Shape shape;
+	private DrawingModel model;
+	private Shape shape;
+	private int i;
 	
 	public RemoveShapeCmd(DrawingModel model,Shape shape) {
 		this.model=model;
@@ -16,13 +17,14 @@ public class RemoveShapeCmd implements Command {
 
 	@Override
 	public void execute() {
-		model.remove(shape);
+		i=model.getShapes().indexOf(shape);
+		model.getShapes().remove(i);
 
 	}
 
 	@Override
 	public void unexecute() {
-		model.add(shape);
+		model.getShapes().add(i,shape);
 
 	}
 
