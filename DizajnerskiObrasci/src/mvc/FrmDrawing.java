@@ -87,6 +87,11 @@ public class FrmDrawing extends JFrame {
 	private JButton btnUndo;
 	private JButton btnRedo;
 	
+	
+	JButton btnToFront;
+	JButton btnToBack;
+	JButton btnBringToFront;
+	JButton btnBringToBack;
 
 	/**
 	 * Create the frame.
@@ -140,11 +145,10 @@ public class FrmDrawing extends JFrame {
 		gl_bColorPanel.setHorizontalGroup(
 			gl_bColorPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_bColorPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(btnSetBcColor, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(textBcColor, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-					.addGap(9))
+					.addComponent(btnSetBcColor)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(textBcColor, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+					.addGap(19))
 		);
 		gl_bColorPanel.setVerticalGroup(
 			gl_bColorPanel.createParallelGroup(Alignment.LEADING)
@@ -153,7 +157,7 @@ public class FrmDrawing extends JFrame {
 					.addGroup(gl_bColorPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSetBcColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 						.addComponent(textBcColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(45, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		bColorPanel.setLayout(gl_bColorPanel);
 		
@@ -185,12 +189,12 @@ public class FrmDrawing extends JFrame {
 		
 		GroupLayout gl_fColorPanel = new GroupLayout(fColorPanel);
 		gl_fColorPanel.setHorizontalGroup(
-			gl_fColorPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_fColorPanel.createSequentialGroup()
-					.addComponent(btnSetFillColor, 0, 0, Short.MAX_VALUE)
+			gl_fColorPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_fColorPanel.createSequentialGroup()
+					.addComponent(btnSetFillColor)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(textFillColor, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-					.addGap(2))
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		gl_fColorPanel.setVerticalGroup(
 			gl_fColorPanel.createParallelGroup(Alignment.LEADING)
@@ -199,7 +203,7 @@ public class FrmDrawing extends JFrame {
 					.addGroup(gl_fColorPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSetFillColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 						.addComponent(textFillColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(52, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		fColorPanel.setLayout(gl_fColorPanel);
 		
@@ -301,6 +305,66 @@ public class FrmDrawing extends JFrame {
 		);
 		undoRedoPanel.setLayout(gl_undoRedoPanel);
 		
+		JPanel frontBackPanel = new JPanel();
+		frontBackPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Fill Color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		frontBackPanel.setBackground(SystemColor.menu);
+		
+		btnToFront = new JButton("To Front");
+		btnToFront.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.toFront();
+			}
+		});
+		btnToFront.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		btnToBack = new JButton("To Back");
+		btnToBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.toBack();
+			}
+		});
+		btnToBack.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		btnBringToFront = new JButton("Bring to front");
+		btnBringToFront.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.bringToFront();
+			}
+		});
+		btnBringToFront.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		btnBringToBack = new JButton("Bring to back");
+		btnBringToBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.bringToBack();
+			}
+		});
+		btnBringToBack.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		GroupLayout gl_frontBackPanel = new GroupLayout(frontBackPanel);
+		gl_frontBackPanel.setHorizontalGroup(
+			gl_frontBackPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_frontBackPanel.createSequentialGroup()
+					.addComponent(btnToFront)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnToBack)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnBringToFront)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(btnBringToBack))
+		);
+		gl_frontBackPanel.setVerticalGroup(
+			gl_frontBackPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_frontBackPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_frontBackPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnBringToBack, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnToFront, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnToBack, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnBringToFront, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		frontBackPanel.setLayout(gl_frontBackPanel);
+		
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -313,13 +377,13 @@ public class FrmDrawing extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE)
+							.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(fColorPanel, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
-							.addGap(384))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(view, GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)))
+							.addComponent(fColorPanel, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(frontBackPanel, GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE))
+						.addComponent(view, GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(undoRedoPanel, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
 						.addComponent(modePanel, 0, 0, Short.MAX_VALUE))
@@ -331,7 +395,7 @@ public class FrmDrawing extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(ShapesBtnPanel, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+							.addComponent(ShapesBtnPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addGap(18)
 							.addComponent(actonPanel, GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE)
 							.addGap(26))
@@ -340,11 +404,13 @@ public class FrmDrawing extends JFrame {
 							.addComponent(modePanel, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(undoRedoPanel, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(377, Short.MAX_VALUE))
+							.addContainerGap(329, Short.MAX_VALUE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-								.addComponent(fColorPanel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+									.addComponent(bColorPanel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+									.addComponent(fColorPanel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
+								.addComponent(frontBackPanel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(view, GroupLayout.PREFERRED_SIZE, 486, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())))
@@ -582,6 +648,11 @@ public class FrmDrawing extends JFrame {
 	public JButton getBtnRedo() {
 		return btnRedo;
 	}
-	
-	
+
+
+
+
+	public JToggleButton getTglbtnSelect() {
+		return tglbtnSelect;
+	}
 }

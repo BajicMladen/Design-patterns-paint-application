@@ -12,6 +12,10 @@ import javax.swing.JOptionPane;
 
 import adapter.HexagonAdapter;
 import command.Command;
+import command.positions.BringToBackCmd;
+import command.positions.BringToFrontCmd;
+import command.positions.ToBackCmd;
+import command.positions.ToFrontCmd;
 import command.select.SelectShapeCmd;
 import command.shapes.AddShapeCmd;
 import command.shapes.RemoveShapeCmd;
@@ -281,15 +285,110 @@ public class DrawingController {
 	 
 	 
 	 public void addShapesToStack(Command c) {
-		 
+		 clearUndoRedoStack(undoRedoStackPointer);
 		 undoRedoStack.push(c);
 		 c.execute();
 		 undoRedoStackPointer++;
+		 
+		 frame.getBtnUndo().setEnabled(true);
+		 frame.getBtnRedo().setEnabled(false);
 	 }
 	 
 	 
+	private void clearUndoRedoStack(int undoRedoStackPointer)
+		{
+		    if(undoRedoStack.size()<1)return;
+		    for(int i = undoRedoStack.size()-1; i > undoRedoStackPointer; i--)
+		    {
+		        undoRedoStack.remove(i);
+		    }
+		}
+		
+		
+	public void toFront() {
+		Iterator<Shape> iterator= model.getShapes().iterator();
+		while(iterator.hasNext()) {
+			Shape shape = iterator.next();
+			if(shape.isSelected()) {
+				shape.setSelected(false);
+				try {
+					addShapesToStack(new ToFrontCmd(model, shape));
+					frame.repaint();
+				}catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Element is alrady in front!");
+					shape.setSelected(false);
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	public void toBack() {
+		Iterator<Shape> iterator = model.getShapes().iterator();
+		while(iterator.hasNext()) {
+			Shape shape = iterator.next();
+			
+			if(shape.isSelected()) {
+				shape.setSelected(false);
+				
+				try {
+					addShapesToStack(new ToBackCmd(model, shape));
+					frame.repaint();
+					
+				}catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Element is already in back");
+					shape.setSelected(false);
+				}
+			}
+		}
+	}
+	
+	public void bringToBack() {
+		Iterator<Shape> iterator = model.getShapes().iterator();
+		while(iterator.hasNext()) {
+			Shape shape = iterator.next();
+			
+			if(shape.isSelected()) {
+				shape.setSelected(false);
+				try {
+					addShapesToStack(new BringToBackCmd(model, shape));
+					frame.repaint();
+					
+				}catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Element is already on the back");
+					shape.setSelected(false);
+				}
+				break;
+			}
+		}
+	}
+	
+	public void bringToFront() {
+		Iterator<Shape> iterator = model.getShapes().iterator();
+		while(iterator.hasNext()) {
+			Shape shape = iterator.next();
+			
+			if(shape.isSelected()) {
+				shape.setSelected(false);
+				
+				try {
+					addShapesToStack(new BringToFrontCmd(model, shape));
+					frame.repaint();
+				}catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Element is already on top");
+					shape.setSelected(false);
+				}
+				break;
+			}
+		}
+	}
 	 
+	
+	
 	 
+	
 }
 
 
