@@ -6,6 +6,8 @@ import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
@@ -43,6 +45,7 @@ import modifyDlg.DlgHexMod;
 import modifyDlg.DlgLineMod;
 import modifyDlg.DlgPointMod;
 import modifyDlg.DlgRectMod;
+import observer.ShapeObserver;
 
 public class DrawingController {
 	
@@ -68,6 +71,10 @@ public class DrawingController {
 			 Point point = new Point(e.getX(),e.getY(),shapeColor);
 			 
 			 addShapesToStack(new AddShapeCmd(model, point));
+			 
+			 point.addObserver(new ShapeObserver(frame,model));
+			
+			 
 			
 		 }
 		 else if(frame.tgbtnLine.isSelected()) {
@@ -79,6 +86,9 @@ public class DrawingController {
 				 pointOne=null;
 				 
 				addShapesToStack(new AddShapeCmd(model, line));
+				
+				line.addObserver(new ShapeObserver(frame,model));
+				
 			 }
 		 }else if(frame.getTgbtnRectangle().isSelected()) {
 			 DlgDrawRec drawRec = new DlgDrawRec();
@@ -89,6 +99,10 @@ public class DrawingController {
 			Integer.parseInt(drawRec.getTextHeight().getText()),shapeColor,innerColor);		
 			 
 			 addShapesToStack(new AddShapeCmd(model,rc));
+			 
+			rc.addObserver(new ShapeObserver(frame,model));
+			 
+			
 			}
 			 
 		 }else if(frame.tgbtnCircle.isSelected()) {
@@ -99,6 +113,10 @@ public class DrawingController {
 				 Circle c=new Circle(mouseClick,Integer.parseInt(drawCircle.getTextRadius().getText()),shapeColor,innerColor);
 				 
 				 addShapesToStack(new AddShapeCmd(model,c));
+				 
+				 c.addObserver(new ShapeObserver(frame,model));
+				 
+				
 			 }
 			 
 		 }else if(frame.getTgbtnDonut().isSelected()) {
@@ -109,6 +127,9 @@ public class DrawingController {
 				 Donut d = new Donut(mouseClick,Integer.parseInt(drawDonut.getTextRadius().getText()),Integer.parseInt(drawDonut.getTextInnerRadius().getText()),shapeColor,innerColor);
 				
 				 addShapesToStack(new AddShapeCmd(model,d));
+				 
+				 d.addObserver(new ShapeObserver(frame,model));
+				 
 			 }
 			 
 		 }else if(frame.getTgbtnHexagon().isSelected()) {
@@ -120,14 +141,20 @@ public class DrawingController {
 				 SurfaceShape hexagonAdapter=new HexagonAdapter(hexagon,shapeColor,innerColor);
 				
 				 addShapesToStack(new AddShapeCmd(model,hexagonAdapter));
+				 
+				 hexagonAdapter.addObserver(new ShapeObserver(frame,model));
+				 
+				 
 			 }
 		 }
 		 
+		
 		 frame.repaint();
 		 
 		 
-		 
 	 }
+	 
+
 	 
 	 
 	 public void deleteShape() {
@@ -145,6 +172,17 @@ public class DrawingController {
 				for(Shape shape : shapes) {
 					if(model.getShapes().contains(shape));
 					addShapesToStack(new RemoveShapeCmd(model, shape));
+				}
+				
+				if(model.getShapes().size()==0)  ///za undo dugme
+				{
+				 frame.getTglbtnSelect().setEnabled(false);
+				 frame.getBtnModify().setEnabled(false);
+				 frame.getBtnDelete().setEnabled(false);
+				 frame.getBtnToBack().setEnabled(false);
+				 frame.getBtnToFront().setEnabled(false);
+				 frame.getBtnBringToBack().setEnabled(false);
+				 frame.getBtnBringToFront().setEnabled(false);
 				}
 				
 				frame.repaint();
@@ -171,6 +209,8 @@ public class DrawingController {
 		 if(undoRedoStackPointer+1>=undoRedoStack.size()) {
 			 frame.getBtnRedo().setEnabled(false);
 		 }
+		 
+		 
 	 }
 	 
 	
@@ -292,6 +332,7 @@ public class DrawingController {
 		 
 		 frame.getBtnUndo().setEnabled(true);
 		 frame.getBtnRedo().setEnabled(false);
+		 frame.getTglbtnSelect().setEnabled(true);
 	 }
 	 
 	 
@@ -317,6 +358,7 @@ public class DrawingController {
 				}catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Element is alrady in front!");
 					shape.setSelected(false);
+					frame.repaint();
 				}
 			}
 		}
@@ -340,6 +382,7 @@ public class DrawingController {
 				}catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Element is already in back");
 					shape.setSelected(false);
+					frame.repaint();
 				}
 			}
 		}
@@ -384,6 +427,22 @@ public class DrawingController {
 			}
 		}
 	}
+	
+	public int getSelectedShapes() {
+		int selected=0;
+		for (Shape s : model.getShapes()) {
+			if(s.isSelected())
+			{
+				selected++;
+			}
+	}
+		return selected;
+	}
+	
+
+
+	
+	
 	 
 	
 	

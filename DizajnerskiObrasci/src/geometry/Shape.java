@@ -2,8 +2,10 @@ package geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Observable;
 
-public abstract class Shape {
+
+public abstract class Shape extends Observable{
 	private boolean selected;
 	private Color color;
 
@@ -19,7 +21,12 @@ public abstract class Shape {
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
-	}
+		setChanged();
+		notifyObservers();
+		
+		
+	}		
+
 
 	public Color getColor() {
 		return color;
