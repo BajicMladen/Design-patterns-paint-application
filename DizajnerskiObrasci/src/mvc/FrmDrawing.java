@@ -2,32 +2,16 @@ package mvc;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
+
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import command.positions.BringToBackCmd;
-import geometry.Shape;
-import geometry.Circle;
-import geometry.Donut;
-import dlg.DlgDrawCircle;
-import dlg.DlgDrawDonut;
-import dlg.DlgDrawRec;
-import geometry.Line;
-import geometry.Point;
-import geometry.Rectangle;
-import modifyDlg.DlgCircleMod;
-import modifyDlg.DlgDonutMod;
-import modifyDlg.DlgLineMod;
-import modifyDlg.DlgPointMod;
-import modifyDlg.DlgRectMod;
+
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -35,21 +19,18 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
-import javax.swing.JRadioButton;
+
 import java.awt.SystemColor;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Frame;
 
 @SuppressWarnings("serial")
 public class FrmDrawing extends JFrame{
@@ -69,20 +50,20 @@ public class FrmDrawing extends JFrame{
 
 	
 	
-	JToggleButton tgbtnPoint;
-	JToggleButton tgbtnLine;
-	JToggleButton tgbtnCircle;
-	JToggleButton tgbtnRectangle;
-	JToggleButton tgbtnDonut;
-	JToggleButton tgbtnHexagon;
+	private JToggleButton tgbtnPoint;
+	private JToggleButton tgbtnLine;
+	private JToggleButton tgbtnCircle;
+	private JToggleButton tgbtnRectangle;
+	private JToggleButton tgbtnDonut;
+	private JToggleButton tgbtnHexagon;
 	
 	
-	JButton btnSetBcColor;
-	JButton btnSetFillColor;
+	private JButton btnSetBcColor;
+	private JButton btnSetFillColor;
 	
-	JButton btnModify;
-	JButton btnDeleteAll;
-	JButton btnDelete;
+	private JButton btnModify;
+	private JButton btnDeleteAll;
+	private JButton btnDelete;
 	
 	private JToggleButton tglbtnDraw;
 	private JToggleButton tglbtnSelect;
@@ -91,10 +72,10 @@ public class FrmDrawing extends JFrame{
 	private JButton btnRedo;
 	
 	
-	JButton btnToFront;
-	JButton btnToBack;
-	JButton btnBringToFront;
-	JButton btnBringToBack;
+	private JButton btnToFront;
+	private JButton btnToBack;
+	private JButton btnBringToFront;
+	private JButton btnBringToBack;
 
 	/**
 	 * Create the frame.
@@ -121,7 +102,7 @@ public class FrmDrawing extends JFrame{
 		modePanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Mode", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
 		JPanel bColorPanel = new JPanel();
-		bColorPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Background Color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		bColorPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Border Color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		bColorPanel.setBackground(SystemColor.menu);
 		
 		btnSetBcColor = new JButton("Set Color");
@@ -269,7 +250,7 @@ public class FrmDrawing extends JFrame{
 		actonPanel.setLayout(gl_actonPanel);
 		
 		JPanel undoRedoPanel = new JPanel();
-		undoRedoPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "undo/redo", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		undoRedoPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Undo/Redo", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
 		btnUndo = new JButton("Undo");
 		btnUndo.setEnabled(false);
@@ -314,7 +295,7 @@ public class FrmDrawing extends JFrame{
 		undoRedoPanel.setLayout(gl_undoRedoPanel);
 		
 		JPanel frontBackPanel = new JPanel();
-		frontBackPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Fill Color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		frontBackPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Position", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		frontBackPanel.setBackground(SystemColor.menu);
 		
 		btnToFront = new JButton("To Front");

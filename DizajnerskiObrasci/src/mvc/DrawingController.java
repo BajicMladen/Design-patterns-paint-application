@@ -2,12 +2,11 @@ package mvc;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Area;
+
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
+
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
@@ -18,6 +17,7 @@ import command.positions.BringToBackCmd;
 import command.positions.BringToFrontCmd;
 import command.positions.ToBackCmd;
 import command.positions.ToFrontCmd;
+import command.select.DeselectShapeCmd;
 import command.select.SelectShapeCmd;
 import command.shapes.AddShapeCmd;
 import command.shapes.RemoveShapeCmd;
@@ -70,14 +70,14 @@ public class DrawingController {
 		 if(frame.getTgbtnPoint().isSelected()) {
 			 Point point = new Point(e.getX(),e.getY(),shapeColor);
 			 
-			 addShapesToStack(new AddShapeCmd(model, point));
+			 addToCommandStack(new AddShapeCmd(model, point));
 			 
 			 point.addObserver(new ShapeObserver(frame,model));
 			
 			 
 			
 		 }
-		 else if(frame.tgbtnLine.isSelected()) {
+		 else if(frame.getTgbtnLine().isSelected()) {
 			 if(pointOne == null) {
 				pointOne = new Point(e.getX(),e.getY());
 			 }else {
@@ -85,7 +85,7 @@ public class DrawingController {
 				 Line line = new Line(pointOne,pointTwo,shapeColor);
 				 pointOne=null;
 				 
-				addShapesToStack(new AddShapeCmd(model, line));
+				addToCommandStack(new AddShapeCmd(model, line));
 				
 				line.addObserver(new ShapeObserver(frame,model));
 				
@@ -98,21 +98,21 @@ public class DrawingController {
 			 Rectangle rc=new Rectangle(mouseClick,Integer.parseInt(drawRec.getTextWidth().getText()),
 			Integer.parseInt(drawRec.getTextHeight().getText()),shapeColor,innerColor);		
 			 
-			 addShapesToStack(new AddShapeCmd(model,rc));
+			 addToCommandStack(new AddShapeCmd(model,rc));
 			 
 			rc.addObserver(new ShapeObserver(frame,model));
 			 
 			
 			}
 			 
-		 }else if(frame.tgbtnCircle.isSelected()) {
+		 }else if(frame.getTgbtnCircle().isSelected()) {
 			 DlgDrawCircle drawCircle=new DlgDrawCircle();
 			 drawCircle.setVisible(true);
 			 
 			 if(drawCircle.isFlag()) {
 				 Circle c=new Circle(mouseClick,Integer.parseInt(drawCircle.getTextRadius().getText()),shapeColor,innerColor);
 				 
-				 addShapesToStack(new AddShapeCmd(model,c));
+				 addToCommandStack(new AddShapeCmd(model,c));
 				 
 				 c.addObserver(new ShapeObserver(frame,model));
 				 
@@ -126,7 +126,7 @@ public class DrawingController {
 			 if(drawDonut.isFlag1()) {
 				 Donut d = new Donut(mouseClick,Integer.parseInt(drawDonut.getTextRadius().getText()),Integer.parseInt(drawDonut.getTextInnerRadius().getText()),shapeColor,innerColor);
 				
-				 addShapesToStack(new AddShapeCmd(model,d));
+				 addToCommandStack(new AddShapeCmd(model,d));
 				 
 				 d.addObserver(new ShapeObserver(frame,model));
 				 
@@ -140,7 +140,7 @@ public class DrawingController {
 				 Hexagon hexagon = new Hexagon(mouseClick.getX(),mouseClick.getY(),Integer.parseInt(drawHex.getTextRadius().getText()));
 				 SurfaceShape hexagonAdapter=new HexagonAdapter(hexagon,shapeColor,innerColor);
 				
-				 addShapesToStack(new AddShapeCmd(model,hexagonAdapter));
+				 addToCommandStack(new AddShapeCmd(model,hexagonAdapter));
 				 
 				 hexagonAdapter.addObserver(new ShapeObserver(frame,model));
 				 
@@ -169,22 +169,11 @@ public class DrawingController {
 					}
 				}
 				
-				for(Shape shape : shapes) {
-					if(model.getShapes().contains(shape));
-					addShapesToStack(new RemoveShapeCmd(model, shape));
-				}
 				
-				if(model.getShapes().size()==0)  ///za undo dugme
-				{
-				 frame.getTglbtnSelect().setEnabled(false);
-				 frame.getBtnModify().setEnabled(false);
-				 frame.getBtnDelete().setEnabled(false);
-				 frame.getBtnToBack().setEnabled(false);
-				 frame.getBtnToFront().setEnabled(false);
-				 frame.getBtnBringToBack().setEnabled(false);
-				 frame.getBtnBringToFront().setEnabled(false);
-				}
+					
+					addToCommandStack(new RemoveShapeCmd(model, shapes));
 				
+											
 				frame.repaint();
 			}
 		}
@@ -234,12 +223,11 @@ public class DrawingController {
 				 
 				if(model.get(i).isSelected() == false) {
 				
-					 addShapesToStack(new SelectShapeCmd(model.get(i)));
+					 addToCommandStack(new SelectShapeCmd(model.get(i)));
 					 frame.repaint();
 					 break;
 				}else{
-					SelectShapeCmd selectShapeCmd = new SelectShapeCmd(model.get(i));
-					selectShapeCmd.unexecute();
+					addToCommandStack(new DeselectShapeCmd(model.get(i)));
 					frame.repaint();
 					break;
 				}
@@ -265,7 +253,7 @@ public class DrawingController {
 			 modPoint.setVisible(true);
 			 if(modPoint.isFlag()==true) {
 				 Point point = new Point(modPoint.getX(),modPoint.getY(),modPoint.getColor());
-				 addShapesToStack(new UpdatePointCmd((Point)shapeToModify,point));
+				 addToCommandStack(new UpdatePointCmd((Point)shapeToModify,point));
 			 }
 		 }else if(shapeToModify instanceof Line) {
 			 DlgLineMod modLine = new DlgLineMod();
@@ -273,7 +261,7 @@ public class DrawingController {
 			 modLine.setVisible(true);
 			 if(modLine.isFlag()==true) {
 			 Line line =new Line(new Point(modLine.getStartX(),modLine.getStartY()),new Point(modLine.getEndX(),modLine.getEndY()),modLine.getColor());
-			 addShapesToStack(new UpdateLineCmd((Line)shapeToModify, line));
+			 addToCommandStack(new UpdateLineCmd((Line)shapeToModify, line));
 			 }
 			 
 		 }else if(shapeToModify instanceof Rectangle) {
@@ -282,7 +270,7 @@ public class DrawingController {
 			modRec.setVisible(true);
 			if(modRec.isFlag()==true) {
 				Rectangle rectangle = new Rectangle(new Point(modRec.getX(),modRec.getY()),modRec.getHeightRec(),modRec.getWidthRec(),modRec.getColor(),modRec.getInnerColor());
-				addShapesToStack(new UpdateRectangleCmd((Rectangle)shapeToModify, rectangle));
+				addToCommandStack(new UpdateRectangleCmd((Rectangle)shapeToModify, rectangle));
 			}
 			
 			
@@ -292,7 +280,7 @@ public class DrawingController {
 				modDon.setVisible(true);
 				if(modDon.isFlag()==true) {
 					Donut donut = new Donut(new Point(modDon.getX(),modDon.getY()),modDon.getRadius(),modDon.getInnerRadius(),modDon.getColor(),modDon.getInnerColor());
-					addShapesToStack(new UpdateDonutCmd((Donut)shapeToModify,donut));
+					addToCommandStack(new UpdateDonutCmd((Donut)shapeToModify,donut));
 				}
 				
 				
@@ -302,7 +290,7 @@ public class DrawingController {
 				modCircle.setVisible(true);
 				if(modCircle.isFlag()==true) {
 					Circle circle = new Circle(new Point(modCircle.getX(),modCircle.getY()),modCircle.getRadius(),modCircle.getColor(),modCircle.getInnerColor());
-					addShapesToStack(new UpdateCircleCmd((Circle)shapeToModify,circle));
+					addToCommandStack(new UpdateCircleCmd((Circle)shapeToModify,circle));
 				 }
 				
 				
@@ -313,7 +301,7 @@ public class DrawingController {
 			 if(modHex.isFlag()==true) {
 				 Hexagon hexagon = new Hexagon(modHex.getX(), modHex.getY(), modHex.getRadius());
 				 HexagonAdapter hexagonAdapter = new HexagonAdapter(hexagon,modHex.getColor(),modHex.getInnerColor());
-				 addShapesToStack(new UpdateHexagonCmd((HexagonAdapter)shapeToModify, hexagonAdapter));
+				 addToCommandStack(new UpdateHexagonCmd((HexagonAdapter)shapeToModify, hexagonAdapter));
 			 }
 		 }
 		 frame.repaint();
@@ -324,8 +312,8 @@ public class DrawingController {
 	 
 	 
 	 
-	 public void addShapesToStack(Command c) {
-		 clearUndoRedoStack(undoRedoStackPointer);
+	 public void addToCommandStack(Command c) {
+		 clearCommandStack(undoRedoStackPointer);
 		 undoRedoStack.push(c);
 		 c.execute();
 		 undoRedoStackPointer++;
@@ -336,7 +324,7 @@ public class DrawingController {
 	 }
 	 
 	 
-	private void clearUndoRedoStack(int undoRedoStackPointer)
+	private void clearCommandStack(int undoRedoStackPointer)
 		{
 		    if(undoRedoStack.size()<1)return;
 		    for(int i = undoRedoStack.size()-1; i > undoRedoStackPointer; i--)
@@ -346,6 +334,7 @@ public class DrawingController {
 		}
 		
 		
+	
 	public void toFront() {
 		Iterator<Shape> iterator= model.getShapes().iterator();
 		while(iterator.hasNext()) {
@@ -353,7 +342,7 @@ public class DrawingController {
 			if(shape.isSelected()) {
 				shape.setSelected(false);
 				try {
-					addShapesToStack(new ToFrontCmd(model, shape));
+					addToCommandStack(new ToFrontCmd(model, shape));
 					frame.repaint();
 				}catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Element is alrady in front!");
@@ -376,7 +365,7 @@ public class DrawingController {
 				shape.setSelected(false);
 				
 				try {
-					addShapesToStack(new ToBackCmd(model, shape));
+					addToCommandStack(new ToBackCmd(model, shape));
 					frame.repaint();
 					
 				}catch (Exception e) {
@@ -388,6 +377,8 @@ public class DrawingController {
 		}
 	}
 	
+	
+	
 	public void bringToBack() {
 		Iterator<Shape> iterator = model.getShapes().iterator();
 		while(iterator.hasNext()) {
@@ -396,7 +387,7 @@ public class DrawingController {
 			if(shape.isSelected()) {
 				shape.setSelected(false);
 				try {
-					addShapesToStack(new BringToBackCmd(model, shape));
+					addToCommandStack(new BringToBackCmd(model, shape));
 					frame.repaint();
 					
 				}catch (Exception e) {
@@ -408,6 +399,8 @@ public class DrawingController {
 		}
 	}
 	
+	
+	
 	public void bringToFront() {
 		Iterator<Shape> iterator = model.getShapes().iterator();
 		while(iterator.hasNext()) {
@@ -417,7 +410,7 @@ public class DrawingController {
 				shape.setSelected(false);
 				
 				try {
-					addShapesToStack(new BringToFrontCmd(model, shape));
+					addToCommandStack(new BringToFrontCmd(model, shape));
 					frame.repaint();
 				}catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Element is already on top");
@@ -428,19 +421,7 @@ public class DrawingController {
 		}
 	}
 	
-	public int getSelectedShapes() {
-		int selected=0;
-		for (Shape s : model.getShapes()) {
-			if(s.isSelected())
-			{
-				selected++;
-			}
-	}
-		return selected;
-	}
 	
-
-
 	
 	
 	 
