@@ -2,7 +2,7 @@ package mvc;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
 import java.util.Iterator;
@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
+import javax.swing.plaf.basic.BasicArrowButton;
 
 import adapter.HexagonAdapter;
 import command.Command;
@@ -71,7 +72,6 @@ public class DrawingController {
 			 Point point = new Point(e.getX(),e.getY(),shapeColor);
 			 
 			 addToCommandStack(new AddShapeCmd(model, point));
-			 
 			 point.addObserver(new ShapeObserver(frame,model));
 			
 			 
@@ -175,6 +175,7 @@ public class DrawingController {
 				
 											
 				frame.repaint();
+				
 			}
 		}
 		 
@@ -207,8 +208,18 @@ public class DrawingController {
 	 
 	 
 	 public void deleteAll() {
-		 model.getShapes().clear();
-		 frame.repaint();
+		 if(frame.getBtnDeleteAll().isEnabled()) {
+			 if(JOptionPane.showConfirmDialog(null, "This option will clear panel permanently! Are you sure","Stop!", JOptionPane.YES_NO_OPTION)==0) {
+				 model.getShapes().clear();
+				 undoRedoStack.clear();
+				 undoRedoStackPointer=-1;
+				 frame.repaint();
+				 
+				 frame.getBtnUndo().setEnabled(false);
+				 
+			 }
+		 }
+		
 	 }
 	 
 	
@@ -318,6 +329,8 @@ public class DrawingController {
 		 c.execute();
 		 undoRedoStackPointer++;
 		 
+		 frame.addToLogList(c.toString());
+		 
 		 frame.getBtnUndo().setEnabled(true);
 		 frame.getBtnRedo().setEnabled(false);
 		 frame.getTglbtnSelect().setEnabled(true);
@@ -339,16 +352,18 @@ public class DrawingController {
 		Iterator<Shape> iterator= model.getShapes().iterator();
 		while(iterator.hasNext()) {
 			Shape shape = iterator.next();
-			if(shape.isSelected()) {
-				shape.setSelected(false);
-				try {
+			if(shape.isSelected()) {				
+				
+				if(model.getShapes().indexOf(shape)==model.getShapes().size()-1) {
+					JOptionPane.showMessageDialog(null, "Element is alrady in front!");
+					
+					frame.repaint();
+					
+				}else {
 					addToCommandStack(new ToFrontCmd(model, shape));
 					frame.repaint();
-				}catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Element is alrady in front!");
-					shape.setSelected(false);
-					frame.repaint();
 				}
+																													
 			}
 		}
 		
@@ -362,15 +377,14 @@ public class DrawingController {
 			Shape shape = iterator.next();
 			
 			if(shape.isSelected()) {
-				shape.setSelected(false);
 				
-				try {
-					addToCommandStack(new ToBackCmd(model, shape));
+				if(model.getShapes().indexOf(shape)==0) {
+					JOptionPane.showMessageDialog(null, "Element is alrady in back!");
+					
 					frame.repaint();
 					
-				}catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Element is already in back");
-					shape.setSelected(false);
+				}else {
+					addToCommandStack(new ToBackCmd(model, shape));
 					frame.repaint();
 				}
 			}
@@ -385,16 +399,16 @@ public class DrawingController {
 			Shape shape = iterator.next();
 			
 			if(shape.isSelected()) {
-				shape.setSelected(false);
-				try {
-					addToCommandStack(new BringToBackCmd(model, shape));
+				
+				if(model.getShapes().indexOf(shape)==0) {
+					JOptionPane.showMessageDialog(null, "Element is alrady in back!");
+					
 					frame.repaint();
 					
-				}catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Element is already on the back");
-					shape.setSelected(false);
+				}else {
+					addToCommandStack(new BringToBackCmd(model, shape));
+					frame.repaint();
 				}
-				break;
 			}
 		}
 	}
@@ -406,17 +420,17 @@ public class DrawingController {
 		while(iterator.hasNext()) {
 			Shape shape = iterator.next();
 			
-			if(shape.isSelected()) {
-				shape.setSelected(false);
+			if(shape.isSelected()) {				
 				
-				try {
-					addToCommandStack(new BringToFrontCmd(model, shape));
+				if(model.getShapes().indexOf(shape)==model.getShapes().size()-1) {
+					JOptionPane.showMessageDialog(null, "Element is alrady in front!");					
 					frame.repaint();
-				}catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "Element is already on top");
-					shape.setSelected(false);
+					
+				}else {
+					addToCommandStack(new BringToBackCmd(model, shape));
+					frame.repaint();
 				}
-				break;
+																													
 			}
 		}
 	}

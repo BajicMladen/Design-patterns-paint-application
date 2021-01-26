@@ -20,13 +20,9 @@ public class BringToBackCmd implements Command {
 	
 
 	@Override
-	public void execute() {
-		if(index==0) {
-			JOptionPane.showMessageDialog(null, "Element is alreadi on the back");
-		}else {
+	public void execute() {	
 			model.remove(shape);
-			model.getShapes().add(0,shape);
-		}
+			model.getShapes().add(0,shape);	
 
 	}
 

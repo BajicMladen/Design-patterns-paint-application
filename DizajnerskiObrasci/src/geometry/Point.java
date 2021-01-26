@@ -66,8 +66,7 @@ public class Point extends Shape implements Cloneable{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return "->POINT:("+ x +","+y+","+this.getColor().toString()+")";
 	}
 	
 		

@@ -2,46 +2,55 @@ package command.shapes;
 
 
 
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Hashtable;
 
 import command.Command;
 import geometry.Shape;
 import mvc.DrawingModel;
+import observer.ShapeObserver;
 
 public class RemoveShapeCmd implements Command {
 	private DrawingModel model;
-	private int k;
-	private ArrayList<Shape> shapes=new ArrayList<Shape>();
-	private ArrayList<Integer> index=new ArrayList<Integer>();
+	private Hashtable<Integer,Shape> shapes;
+	
+	
 	
 	
 	public RemoveShapeCmd(DrawingModel model,ArrayList<Shape> shapes) {
 		this.model=model;
-		this.shapes=shapes;
+		this.shapes=new Hashtable<>();
 		
-	}
-
-	@Override
-	public void execute() {
 		for(Shape shape : shapes) {
-		k=model.getShapes().indexOf(shape);
-		index.add(k);
-		model.getShapes().remove(k);
+			this.shapes.put(model.getShapes().indexOf(shape), shape);
 		}
 		
 	}
 
 	@Override
-	public void unexecute() {
-		Collections.sort(index);
-		for(int i=0;i<shapes.size();i++) {
-		model.getShapes().add(index.get(i),shapes.get(i));
+	public void execute() {
 		
-		}	
-		index.clear();
+		for(Shape shape : shapes.values()) {
+			shape.setSelected(false);
+			model.getShapes().remove(shape);
+		}
+				
 	}
+	
+	
 
+	@Override
+	public void unexecute() {
+		for(int key : shapes.keySet()) {
+			Shape shape = shapes.get(key);
+			if(key <= model.getShapes().size()) {
+				model.getShapes().add(key,shape);
+				shape.setSelected(true);
+			}else {
+				model.add(shape);
+				shape.setSelected(true);
+			}
+		} 
+	}
+			
 }
