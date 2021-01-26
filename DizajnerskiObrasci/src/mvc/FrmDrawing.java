@@ -33,7 +33,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JList;
 
 @SuppressWarnings("serial")
@@ -66,7 +65,6 @@ public class FrmDrawing extends JFrame{
 	private JButton btnSetFillColor;
 	
 	private JButton btnModify;
-	private JButton btnDeleteAll;
 	private JButton btnDelete;
 	
 	private JToggleButton tglbtnDraw;
@@ -97,7 +95,7 @@ public class FrmDrawing extends JFrame{
 		setContentPane(contentPane);
 		setResizable(false);
 		setTitle("Bajic Mladen, IT46-2018");
-		view.setBounds(151, 95, 750, 500);
+		view.setBounds(151, 95, 750, 517);
 		
 		view.setLayout(null);
 		view.setBackground(Color.WHITE);
@@ -109,7 +107,7 @@ public class FrmDrawing extends JFrame{
 		ShapesBtnPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Shapes", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
 		JPanel modePanel = new JPanel();
-		modePanel.setBounds(15, 364, 125, 118);
+		modePanel.setBounds(15, 364, 125, 119);
 		modePanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Mode", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
 		JPanel bColorPanel = new JPanel();
@@ -205,7 +203,7 @@ public class FrmDrawing extends JFrame{
 		fColorPanel.setLayout(gl_fColorPanel);
 		
 		JPanel actonPanel = new JPanel();
-		actonPanel.setBounds(15, 488, 126, 186);
+		actonPanel.setBounds(15, 494, 126, 118);
 		actonPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Action", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		actonPanel.setBackground(SystemColor.menu);
 		
@@ -230,41 +228,29 @@ public class FrmDrawing extends JFrame{
 			}
 		});
 		
-		btnDeleteAll = new JButton("Delete All");
-		btnDeleteAll.setEnabled(false);
-		btnDeleteAll.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnDeleteAll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				controller.deleteAll();
-			}
-		});
-		
 		GroupLayout gl_actonPanel = new GroupLayout(actonPanel);
 		gl_actonPanel.setHorizontalGroup(
-			gl_actonPanel.createParallelGroup(Alignment.LEADING)
+			gl_actonPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_actonPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_actonPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnModify, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnDeleteAll, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_actonPanel.setVerticalGroup(
 			gl_actonPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_actonPanel.createSequentialGroup()
-					.addContainerGap()
+				.addGroup(Alignment.TRAILING, gl_actonPanel.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(btnModify, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(btnDeleteAll, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(32, Short.MAX_VALUE))
+					.addGap(7))
 		);
 		actonPanel.setLayout(gl_actonPanel);
 		
 		JPanel undoRedoPanel = new JPanel();
-		undoRedoPanel.setBounds(151, 606, 221, 68);
+		undoRedoPanel.setBounds(15, 623, 221, 68);
 		undoRedoPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Undo/Redo", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
 		btnUndo = new JButton("Undo");
@@ -391,12 +377,12 @@ public class FrmDrawing extends JFrame{
 		frontBackPanel.setLayout(gl_frontBackPanel);
 		
 		logPanel = new JPanel();
-		logPanel.setBounds(911, 95, 168, 500);
+		logPanel.setBounds(911, 95, 168, 517);
 		logPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Log", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		logPanel.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 12, 168, 488);
+		scrollPane.setBounds(0, 12, 168, 505);
 		
 		scrollPane.setAutoscrolls(true);
 		
@@ -440,17 +426,18 @@ public class FrmDrawing extends JFrame{
 				.addGroup(gl_modePanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_modePanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(tglbtnDraw, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tglbtnSelect, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE))
+						.addComponent(tglbtnSelect, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+						.addComponent(tglbtnDraw, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(13, Short.MAX_VALUE))
 		);
 		gl_modePanel.setVerticalGroup(
 			gl_modePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_modePanel.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(gl_modePanel.createSequentialGroup()
+					.addGap(7)
 					.addComponent(tglbtnDraw, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(tglbtnSelect, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE))
+					.addComponent(tglbtnSelect, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		modePanel.setLayout(gl_modePanel);
 		
@@ -641,10 +628,7 @@ public class FrmDrawing extends JFrame{
 
 
 
-	public JButton getBtnDeleteAll() {
-		return btnDeleteAll;
-	}
-
+	
 
 
 

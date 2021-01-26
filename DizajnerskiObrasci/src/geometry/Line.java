@@ -54,6 +54,12 @@ public class Line extends Shape implements Cloneable{
 	
 	
 	
+	
+
+	@Override
+	public String toString() {
+		return "Line:startpoint" + startPoint.getCordinatesText() + "endpoint" + endPoint.getCordinatesText() + getColorText();
+	}
 
 	@Override
 	public Line clone(){
@@ -72,6 +78,7 @@ public class Line extends Shape implements Cloneable{
 		Point p = new Point(middleByX, middleByY);
 		return p;
 	}
+	
 	
 	
 	

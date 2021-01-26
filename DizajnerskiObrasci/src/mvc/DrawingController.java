@@ -203,27 +203,7 @@ public class DrawingController {
 		 
 	 }
 	 
-	
-	 
-	 
-	 
-	 public void deleteAll() {
-		 if(frame.getBtnDeleteAll().isEnabled()) {
-			 if(JOptionPane.showConfirmDialog(null, "This option will clear panel permanently! Are you sure","Stop!", JOptionPane.YES_NO_OPTION)==0) {
-				 model.getShapes().clear();
-				 undoRedoStack.clear();
-				 undoRedoStackPointer=-1;
-				 frame.repaint();
-				 
-				 frame.getBtnUndo().setEnabled(false);
-				 
-			 }
-		 }
-		
-	 }
-	 
-	
-	 
+		 
 	 
 	 
 	 public void selectShape(MouseEvent e) {
@@ -361,7 +341,9 @@ public class DrawingController {
 					
 				}else {
 					addToCommandStack(new ToFrontCmd(model, shape));
+					
 					frame.repaint();
+					break;
 				}
 																													
 			}
@@ -386,6 +368,7 @@ public class DrawingController {
 				}else {
 					addToCommandStack(new ToBackCmd(model, shape));
 					frame.repaint();
+					break;
 				}
 			}
 		}
@@ -408,6 +391,7 @@ public class DrawingController {
 				}else {
 					addToCommandStack(new BringToBackCmd(model, shape));
 					frame.repaint();
+					break;
 				}
 			}
 		}
@@ -427,8 +411,9 @@ public class DrawingController {
 					frame.repaint();
 					
 				}else {
-					addToCommandStack(new BringToBackCmd(model, shape));
+					addToCommandStack(new BringToFrontCmd(model, shape));
 					frame.repaint();
+					break;
 				}
 																													
 			}

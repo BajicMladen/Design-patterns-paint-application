@@ -23,4 +23,11 @@ public class DeselectShapeCmd implements Command {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Deselected: " + s.toString();
+	}
+	
+	
+
 }

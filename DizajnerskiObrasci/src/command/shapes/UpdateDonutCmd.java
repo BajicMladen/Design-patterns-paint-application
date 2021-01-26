@@ -42,4 +42,11 @@ public class UpdateDonutCmd implements Command {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Updated: "+ original.toString()+" --> "+newState.toString();
+	}
+	
+	
+
 }

@@ -16,7 +16,7 @@ public class UpdateCircleCmd implements Command {
 
 	@Override
 	public void execute() {
-		original = oldState.clone();
+		original = (Circle)oldState.clone();
 
 		oldState.getCenter().setX(newState.getCenter().getX());
 		oldState.getCenter().setY(newState.getCenter().getY());
@@ -40,5 +40,12 @@ public class UpdateCircleCmd implements Command {
 		
 
 	}
+
+	@Override
+	public String toString() {
+		return "Updated: "+ original.toString()+" --> "+newState.toString();
+	}
+	
+	
 
 }

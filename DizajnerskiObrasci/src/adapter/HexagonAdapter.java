@@ -3,8 +3,10 @@ package adapter;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import geometry.Point;
 import geometry.SurfaceShape;
 import hexagon.Hexagon;
+
 
 public class HexagonAdapter extends SurfaceShape implements Cloneable{
 	
@@ -59,6 +61,27 @@ public class HexagonAdapter extends SurfaceShape implements Cloneable{
 	
 
 	
+	@Override
+	public String toString() {
+		Point center = new Point(hexagon.getX(), hexagon.getY());
+		return "hexagon: Centar"+center.getCordinatesText()+ "radius(" + hexagon.getR() + ")" + this.getColorText()+ this.getInnerColorText();
+		
+	}
+	
+	
+
+	@Override
+	public String getInnerColorText() {
+		return "Fill:(" + this.hexagon.getAreaColor().getRed() + "." + this.hexagon.getAreaColor().getGreen() + "."
+				+ this.hexagon.getAreaColor().getBlue() + ")";
+	}
+
+	@Override
+	public String getColorText() {
+		return "Border:(" + this.hexagon.getBorderColor().getRed() + "." + this.hexagon.getBorderColor().getGreen() + "."
+				+ this.hexagon.getBorderColor().getBlue() + ")";
+	}
+
 	@Override
 	public HexagonAdapter clone(){
 		Hexagon hexagon = new Hexagon(this.getX(), this.getY(), this.getR());

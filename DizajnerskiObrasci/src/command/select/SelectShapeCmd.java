@@ -23,4 +23,11 @@ public class SelectShapeCmd implements Command {
 
 	}
 
+	@Override
+	public String toString() {
+		return "selected: " + s.toString();
+	}
+	
+	
+
 }

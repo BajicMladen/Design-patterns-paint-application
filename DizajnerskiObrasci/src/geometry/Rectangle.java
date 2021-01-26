@@ -76,12 +76,19 @@ public class Rectangle extends SurfaceShape  implements Cloneable{
 	}
 	
 	
+	
 
+	@Override
+	public String toString() {
+		return "Rectangle: UperLeftPoint->" + upperLeftPoint.getCordinatesText()+"Height->"+ this.height + "Width->"+ this.width +getColorText() + getInnerColorText();
+	}
+
+	
 	@Override
 	public Rectangle clone(){
 		
 		Rectangle rectangle = new Rectangle();
-		rectangle.setUpperLeftPoint(getUpperLeftPoint());
+		rectangle.setUpperLeftPoint(new Point(getUpperLeftPoint().getX(),getUpperLeftPoint().getY()));
 		rectangle.setHeight(getHeight());
 		rectangle.setWidth(getWidth());
 		rectangle.setColor(getColor());

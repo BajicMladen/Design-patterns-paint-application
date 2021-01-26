@@ -35,5 +35,13 @@ public abstract class Shape extends Observable{
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	
+
+	
+	public String getColorText() {
+		return " BorderColor: ("+ color.getRed()+","+ color.getGreen()+" "+ color.getBlue()+")";
+	}
+	
+	
 
 }

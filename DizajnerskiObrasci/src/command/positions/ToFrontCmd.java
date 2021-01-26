@@ -31,4 +31,11 @@ public class ToFrontCmd implements Command {
 
 	}
 
+	@Override
+	public String toString() {
+		return "ToBack : " + shape.toString();
+	}
+	
+	
+
 }

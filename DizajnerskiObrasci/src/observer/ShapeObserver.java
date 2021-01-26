@@ -22,7 +22,7 @@ public class ShapeObserver implements java.util.Observer {
 		if(count==0) {
 			frame.getBtnModify().setEnabled(false);
 			frame.getBtnDelete().setEnabled(false);
-			frame.getBtnDeleteAll().setEnabled(false);
+			
 			
 			frame.getBtnBringToFront().setEnabled(false);
 			frame.getBtnBringToBack().setEnabled(false);
@@ -33,7 +33,7 @@ public class ShapeObserver implements java.util.Observer {
 			
 			frame.getBtnModify().setEnabled(false);
 			frame.getBtnDelete().setEnabled(true);
-			frame.getBtnDeleteAll().setEnabled(true);
+			
 			
 			frame.getBtnBringToFront().setEnabled(false);
 			frame.getBtnBringToBack().setEnabled(false);
@@ -43,7 +43,7 @@ public class ShapeObserver implements java.util.Observer {
 			
 			frame.getBtnModify().setEnabled(true);
 			frame.getBtnDelete().setEnabled(true);
-			frame.getBtnDeleteAll().setEnabled(true);
+			
 			
 			frame.getBtnBringToFront().setEnabled(true);
 			frame.getBtnBringToBack().setEnabled(true);

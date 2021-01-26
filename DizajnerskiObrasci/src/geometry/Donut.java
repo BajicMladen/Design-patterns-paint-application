@@ -69,9 +69,14 @@ public class Donut extends Circle implements Cloneable{
 	
 
 	@Override
+	public String toString() {
+		return "Donut: center" + super.getCenter().getCordinatesText()+" radius:"+ getRadius()+" InnerRadius:"+ getInnerRadius() + getColorText() + getInnerColorText();
+	}
+
+	@Override
 	public Donut clone() {
 		Donut donutClone = new Donut();
-		donutClone.setCenter(getCenter());
+		donutClone.setCenter(new Point(getCenter().getX(), getCenter().getY()));
 		donutClone.setRadius(getRadius());
 		donutClone.setInnerRadius(getInnerRadius());
 		donutClone.setColor(getColor());

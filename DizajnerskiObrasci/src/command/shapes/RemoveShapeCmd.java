@@ -5,6 +5,8 @@ package command.shapes;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import javax.xml.soap.Text;
+
 import command.Command;
 import geometry.Shape;
 import mvc.DrawingModel;
@@ -52,5 +54,21 @@ public class RemoveShapeCmd implements Command {
 			}
 		} 
 	}
+	
+
+	@Override
+	public String toString() {
+		String deleteText= "removed: ";
+		
+		for(int key : shapes.keySet()) {
+			Shape shape = shapes.get(key);
+			deleteText= deleteText +","+ shape.toString();
+		}
+		
+		return deleteText;
+	}
+	
+	
+	
 			
 }

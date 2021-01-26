@@ -31,4 +31,12 @@ public class ToBackCmd implements Command {
 
 	}
 
+
+	@Override
+	public String toString() {
+		return "ToBack : " + shape.toString();
+	}
+	
+	
+
 }

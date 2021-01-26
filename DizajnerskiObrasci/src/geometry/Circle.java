@@ -70,12 +70,18 @@ public class Circle extends SurfaceShape implements Cloneable{
 	
 	
 	
+	
+
+	@Override
+	public String toString() {
+		return "Circle: center" + center.getCordinatesText()+"radius:"+ this.radius + getColorText() + getInnerColorText();
+	}
 
 	@Override
 	 public Circle clone(){
 		
 		Circle circleClone = new Circle();
-		circleClone.setCenter(getCenter());
+		circleClone.setCenter(new Point(this.getCenter().getX(), this.getCenter().getY()));
 		circleClone.setRadius(getRadius());
 		circleClone.setColor(getColor());
 		circleClone.setInnerColor(getInnerColor());
