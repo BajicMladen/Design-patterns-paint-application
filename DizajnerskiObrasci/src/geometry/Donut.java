@@ -2,6 +2,11 @@ package geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+
 
 import geometry.Line;
 import geometry.Point;
@@ -45,15 +50,46 @@ public class Donut extends Circle implements Cloneable{
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		super.draw(g);
-		g.setColor(getColor());
-		g.drawOval(getCenter().getX() - this.innerRadius, getCenter().getY() - this.innerRadius, this.innerRadius * 2,
-				this.innerRadius * 2);
-		if (isSelected()) {
+	public void draw(Graphics gr) {
+		
+		Graphics2D g = (Graphics2D)gr.create();
+		
+	
+        Shape donut= createDonut();
+		
+        g.setColor(getInnerColor());
+        g.fill(donut);
+        g.setColor(getColor());
+        
+        g.draw(donut);
+        
+        if (isSelected()) {
 			selected(g);
-		}
+        }
+        
+        g.dispose();
+		
 	}
+	
+	public Shape createDonut() {
+		
+		Shape outer=new Ellipse2D.Double(
+	            getCenter().getX() -getRadius(), 
+	            getCenter().getY() -getRadius(),
+	            getRadius()*2, 
+	            getRadius()*2);
+		
+		Shape inner=new Ellipse2D.Double(
+				getCenter().getX() - innerRadius, 
+				getCenter().getY() - innerRadius,
+	            innerRadius*2, 
+	            innerRadius*2);
+		
+		Area area = new Area(outer);
+        area.subtract(new Area(inner));
+        return area;
+	}
+
 
 	@Override
 	public void selected(Graphics g) {
