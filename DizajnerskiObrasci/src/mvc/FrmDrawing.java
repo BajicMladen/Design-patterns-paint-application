@@ -34,10 +34,12 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 @SuppressWarnings("serial")
 public class FrmDrawing extends JFrame{
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textBcColor;
 	private JTextField textFillColor;
@@ -78,6 +80,8 @@ public class FrmDrawing extends JFrame{
 	private JButton btnToBack;
 	private JButton btnBringToFront;
 	private JButton btnBringToBack;
+	
+	private JButton btnSave;
 	
 	private JScrollPane scrollPane;
 	private JList<String> Loglist;
@@ -516,6 +520,47 @@ public class FrmDrawing extends JFrame{
 		contentPane.add(frontBackPanel);
 		contentPane.add(logPanel);
 		
+		JPanel savOpenPanel = new JPanel();
+		savOpenPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Undo/Redo", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		savOpenPanel.setBounds(911, 623, 168, 57);
+		contentPane.add(savOpenPanel);
+		
+		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Object[] possibleValues = { "Save Log", "Save Drawing"};
+				int selectedValue=JOptionPane.showOptionDialog(null, "Choose what to save!", "Save File",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, possibleValues, possibleValues[0]);
+			//	0-log 1-drawing
+				controller.save(selectedValue);
+			}
+		});
+		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnSave.setEnabled(true);
+		
+		JButton btnOpen = new JButton("Open");
+		btnOpen.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnOpen.setEnabled(false);
+		GroupLayout gl_savOpenPanel = new GroupLayout(savOpenPanel);
+		gl_savOpenPanel.setHorizontalGroup(
+			gl_savOpenPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_savOpenPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnOpen)
+					.addGap(8))
+		);
+		gl_savOpenPanel.setVerticalGroup(
+			gl_savOpenPanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 68, Short.MAX_VALUE)
+				.addGroup(gl_savOpenPanel.createSequentialGroup()
+					.addGroup(gl_savOpenPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		savOpenPanel.setLayout(gl_savOpenPanel);
+		
 	
 		
 		view.addMouseListener(new MouseAdapter() {
@@ -698,6 +743,4 @@ public class FrmDrawing extends JFrame{
 	public void setDlm(DefaultListModel<String> dlm) {
 		this.dlm = dlm;
 	}
-	
-	
 }

@@ -3,6 +3,7 @@ package mvc;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import java.util.Iterator;
@@ -47,8 +48,11 @@ import modifyDlg.DlgLineMod;
 import modifyDlg.DlgPointMod;
 import modifyDlg.DlgRectMod;
 import observer.ShapeObserver;
+import strategy.DrawingSaving;
+import strategy.LogSaving;
+import strategy.SavingManager;
 
-public class DrawingController {
+public class DrawingController implements Serializable{
 	
 	private Stack<Command> undoRedoStack = new Stack<>();
 	private int undoRedoStackPointer=-1;
@@ -421,6 +425,17 @@ public class DrawingController {
 	}
 	
 	
+	
+	public void save(int option) {
+		if(option == JOptionPane.YES_OPTION) {
+			SavingManager logManager = new SavingManager(new LogSaving(frame.getDlm()));
+			logManager.save();
+		}
+		else if(option == JOptionPane.NO_OPTION) {
+			SavingManager drawingManager = new SavingManager(new DrawingSaving(model.getShapes()));
+			drawingManager.save();
+		}
+	}
 	
 	
 	 

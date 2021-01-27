@@ -2,10 +2,11 @@ package geometry;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.Observable;
 
 
-public abstract class Shape extends Observable{
+public abstract class Shape extends Observable implements Serializable{
 	private boolean selected;
 	private Color color;
 
