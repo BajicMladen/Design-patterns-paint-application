@@ -21,7 +21,7 @@ public abstract class SurfaceShape extends Shape {
 	}
 	
 	public String getInnerColorText() {
-		return " FillColor: ("+ innerColor.getRed()+","+ innerColor.getGreen()+" "+ innerColor.getBlue()+")";
+		return "FillColor:("+ innerColor.getRed()+","+ innerColor.getGreen()+" "+ innerColor.getBlue()+")";
 	}
 
 }

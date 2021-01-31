@@ -64,6 +64,18 @@ public class Rectangle extends SurfaceShape  implements Cloneable{
 		}
 
 	}
+	
+	
+
+	@Override
+	public int compareTo(Object o) {
+		if(o instanceof Rectangle)
+		{
+			return (int) (this.area()-((Rectangle) o).area());
+		}
+		else 
+			return 0;
+	}
 
 	@Override
 	public void selected(Graphics g) {
@@ -80,7 +92,7 @@ public class Rectangle extends SurfaceShape  implements Cloneable{
 
 	@Override
 	public String toString() {
-		return "Rectangle: UperLeftPoint->" + upperLeftPoint.getCordinatesText()+"Height->"+ this.height + "Width->"+ this.width +getColorText() + getInnerColorText();
+		return "Rectangle:UperLeftPoint->" + upperLeftPoint.getCordinatesText()+" Height->"+ this.height + " Width->"+" "+ this.width+" "+getColorText() + getInnerColorText();
 	}
 
 	

@@ -3,6 +3,13 @@ package mvc;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -10,8 +17,12 @@ import java.util.Iterator;
 
 import java.util.Stack;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicArrowButton;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import adapter.HexagonAdapter;
 import command.Command;
@@ -61,6 +72,9 @@ public class DrawingController implements Serializable{
 	 private FrmDrawing frame;
 	 
 	 private Point pointOne;
+	 
+	 private BufferedReader bufferedReader;
+	 private String line;
 
 
 	 public DrawingController(DrawingModel model,FrmDrawing frame) {
@@ -188,7 +202,9 @@ public class DrawingController implements Serializable{
 	 public void undo() {
 		 
 		 undoRedoStack.get(undoRedoStackPointer).unexecute();
+		 frame.addToLogList("undo:"+undoRedoStack.get(undoRedoStackPointer).toString());
 		 undoRedoStackPointer--;
+		 
 		 frame.repaint();
 		 frame.getBtnRedo().setEnabled(true);
 		 if (undoRedoStackPointer==-1) frame.getBtnUndo().setEnabled(false);
@@ -197,6 +213,7 @@ public class DrawingController implements Serializable{
 	 public void redo() {
 		 undoRedoStackPointer++;
 		 undoRedoStack.get(undoRedoStackPointer).execute();
+		 frame.addToLogList("redo:"+undoRedoStack.get(undoRedoStackPointer).toString());
 		 frame.repaint();
 		 frame.getBtnUndo().setEnabled(true);
 		 
@@ -318,6 +335,7 @@ public class DrawingController implements Serializable{
 		 frame.getBtnUndo().setEnabled(true);
 		 frame.getBtnRedo().setEnabled(false);
 		 frame.getTglbtnSelect().setEnabled(true);
+		 frame.repaint();
 	 }
 	 
 	 
@@ -440,6 +458,470 @@ public class DrawingController implements Serializable{
 	
 	 
 	
+	
+	public void open(int selectedValue) {
+		if(selectedValue==0)
+		{
+			JFileChooser jfc=new JFileChooser("C:\\Users\\Korisnik\\Desktop");
+			jfc.setFileFilter(new FileNameExtensionFilter("log file (.log)", "log"));
+			jfc.setDialogTitle("Open log file");
+		        int chosen =jfc.showOpenDialog(null);
+		        if (chosen == JFileChooser.APPROVE_OPTION) {
+		        	File logFile=new File(jfc.getSelectedFile().getAbsolutePath());
+		        	try 
+		        	{
+		        		
+		        		frame.getBtnUndo().setEnabled(false);
+		        		undoRedoStack.clear();
+						undoRedoStackPointer=-1;
+						model.getShapes().clear();
+						frame.getDlm().clear();
+		        		frame.getBtnLoadNext().setVisible(true);
+		        		frame.getBtnLoadNext().setEnabled(true);
+		        		frame.getBtnLoadNext().setEnabled(true);
+		        		bufferedReader = new BufferedReader(new FileReader(logFile));
+		        	} catch (Exception ex) 
+		        	{
+		                ex.printStackTrace();
+		                JOptionPane.showMessageDialog(null, "Error while opening the file.", "Error!",JOptionPane.ERROR_MESSAGE);
+		            }
+		
+		}
+		}
+		else if(selectedValue==1)
+		{
+			JFileChooser jfc=new JFileChooser("C:\\Users\\Korisnik\\Desktop");
+			jfc.setFileFilter(new FileNameExtensionFilter("ser file (.ser)", "ser"));
+			jfc.setDialogTitle("Open ser file");
+		        int chosen =jfc.showOpenDialog(null);
+		        if (chosen == JFileChooser.APPROVE_OPTION) {
+		        	File serFile=new File(jfc.getSelectedFile().getAbsolutePath());
+		        	try 
+		        	{
+		        		FileInputStream fis = new FileInputStream(serFile);
+						ObjectInputStream ois = new ObjectInputStream(fis);
+			
+						frame.getBtnUndo().setEnabled(false);
+						undoRedoStack.clear();
+						undoRedoStackPointer=-1;
+						model.getShapes().clear();
+						frame.getDlm().clear();
+						ArrayList<Shape> list = (ArrayList<Shape>) ois.readObject();
+						
+						for (Shape s : list) {
+							model.add(s);
+							s.addObserver(new ShapeObserver(frame, model));
+							if(s.isSelected()) {
+								s.setSelected(true);
+							}
+						}
+						frame.getTglbtnSelect().setEnabled(true);
+						ois.close();
+						fis.close();
+		                JOptionPane.showMessageDialog(null, "Drawing loaded succesifuly", "Succesful!",JOptionPane.INFORMATION_MESSAGE);
+		                frame.repaint();
+		            } catch (Exception ex) 
+		        	{
+		                ex.printStackTrace();
+		                JOptionPane.showMessageDialog(null, "Error while opening the file.", "Error!",JOptionPane.ERROR_MESSAGE);
+		            }
+		
+		}
+	}
+	}
+	
+	
+	public void loadNext() {
+		try {
+			if((line = bufferedReader.readLine()) != null)  
+			{ 
+			bufferedReader.mark(1);
+			nextLine();
+			String[] command = line.split("\\W");
+			if(command[1].contentEquals("Point")) {
+				String action = command[0];
+				Point point = new Point(Integer.parseInt(command[2]),Integer.parseInt(command[3]),new Color(Integer.parseInt(command[5]),Integer.parseInt(command[6]),Integer.parseInt(command[7])));
+					switch (action) {
+					
+					case "added":
+						
+						addToCommandStack(new AddShapeCmd(model, point));
+						point.addObserver(new ShapeObserver(frame, model));
+						break;
+					
+					case "selected":
+						
+						for(Shape s : model.getShapes()) {
+							if(s instanceof Point) {
+								if(point.compareTo((Shape)s)==0) {
+									addToCommandStack(new SelectShapeCmd(s));
+								}
+							}
+						}
+						break;
+						
+					case "deselected":
+						
+						for(Shape s : model.getShapes()) {
+							if(s instanceof Point) {
+								if(point.compareTo((Shape)s)==0) {
+									addToCommandStack(new DeselectShapeCmd(s));
+								}
+							}
+						}
+						break;
+						
+					case "Updated":
+						Point newPoint=new Point(Integer.parseInt(command[12]),Integer.parseInt(command[13]),new Color(Integer.parseInt(command[15]),Integer.parseInt(command[16]),Integer.parseInt(command[17])));				
+						for(Shape shape : model.getShapes()) {
+							if(shape instanceof Point) {
+								if(point.compareTo((Shape)shape)==0) {
+									addToCommandStack(new UpdatePointCmd((Point)shape, newPoint));
+								}
+							}
+						}
+						break;	
+	
+					default:
+						break;
+					}
+					
+				}
+			else if(command[1].contentEquals("Line")) {
+				String action = command[0];
+					Line line = new Line(new Point(Integer.parseInt(command[3]),Integer.parseInt(command[4])),new Point(Integer.parseInt(command[6]),Integer.parseInt(command[7])),new Color(Integer.parseInt(command[9]),Integer.parseInt(command[10]),Integer.parseInt(command[11])));
+					switch (action) {
+					
+					case "added":
+						
+						addToCommandStack(new AddShapeCmd(model, line));
+						line.addObserver(new ShapeObserver(frame, model));
+						break;
+					
+					case "selected":
+						
+						for(Shape s : model.getShapes()) {
+							if(s instanceof Line) {
+								if(line.compareTo((Shape)s)==0) {
+									addToCommandStack(new SelectShapeCmd(s));
+								}
+							}
+						}
+						break;
+						
+					case "deselected":
+						
+						for(Shape s : model.getShapes()) {
+							if(s instanceof Line) {
+								if(line.compareTo((Shape)s)==0) {
+									addToCommandStack(new DeselectShapeCmd(s));
+								}
+							}
+						}
+						break;
+						
+						
+					case "Updated":
+					Line newLine = new Line(new Point(Integer.parseInt(command[17]),Integer.parseInt(command[18])),new Point(Integer.parseInt(command[20]),Integer.parseInt(command[21])),new Color(Integer.parseInt(command[23]),Integer.parseInt(command[24]),Integer.parseInt(command[25])));
+						for(Shape shape : model.getShapes()) {
+							if(shape instanceof Line) {
+								if(line.compareTo((Shape)shape)==0) {
+									addToCommandStack(new UpdateLineCmd((Line)shape, newLine));
+								}
+							}
+						}
+						break;	
+	
+					default:
+						break;
+					}
+			}
+			else if(command[1].contentEquals("Circle")) {
+				
+				String action = command[0];
+				Circle circle=new Circle(new Point(Integer.parseInt(command[3]),Integer.parseInt(command[4])), Integer.parseInt(command[7]), new Color(Integer.parseInt(command[9]),Integer.parseInt(command[10]),Integer.parseInt(command[11])), new Color(Integer.parseInt(command[14]),Integer.parseInt(command[15]),Integer.parseInt(command[16])));
+				System.out.println(circle.toString());
+				switch (action) {
+				
+				case "added":
+					
+					addToCommandStack(new AddShapeCmd(model, circle));
+					circle.addObserver(new ShapeObserver(frame, model));
+					break;
+				
+				case "selected":
+					
+					for(Shape s : model.getShapes()) {
+						if(s instanceof Circle) {
+							if(circle.compareTo((Shape)s)==0) {
+								addToCommandStack(new SelectShapeCmd(s));
+							}
+						}
+					}
+					break;
+					
+				case "deselected":
+					
+					for(Shape s : model.getShapes()) {
+						if(s instanceof Circle) {
+							if(circle.compareTo((Shape)s)==0) {
+								addToCommandStack(new DeselectShapeCmd(s));
+							}
+						}
+					}
+					break;
+					
+					
+				case "Updated":
+					Circle newCircle=new Circle(new Point(Integer.parseInt(command[22]),Integer.parseInt(command[23])), Integer.parseInt(command[26]), new Color(Integer.parseInt(command[28]),Integer.parseInt(command[29]),Integer.parseInt(command[30])), new Color(Integer.parseInt(command[33]),Integer.parseInt(command[34]),Integer.parseInt(command[35])));
+					for(Shape shape : model.getShapes()) {
+						if(shape instanceof Circle) {
+							if(circle.compareTo((Shape)shape)==0) {
+								addToCommandStack(new UpdateCircleCmd((Circle)shape, newCircle));
+							}
+						}
+					}
+					break;	
+
+				default:
+					break;
+				}
+				
+			}else if(command[1].contentEquals("Rectangle")) {
+				for (int i=0;i<command.length;i++) {
+					System.out.println(i+" "+command[i]);
+				}
+				String action = command[0];
+				Rectangle rectangle=new Rectangle(new Point(Integer.parseInt(command[5]),Integer.parseInt(command[6])), Integer.parseInt(command[10]),Integer.parseInt(command[14]), new Color(Integer.parseInt(command[16]),Integer.parseInt(command[17]),Integer.parseInt(command[18])), new Color(Integer.parseInt(command[21]),Integer.parseInt(command[22]),Integer.parseInt(command[23])));
+				System.out.println(rectangle.toString());
+				switch (action) {
+				
+				case "added":
+					
+					addToCommandStack(new AddShapeCmd(model, rectangle));
+					rectangle.addObserver(new ShapeObserver(frame, model));
+					break;
+				
+				case "selected":
+					
+					for(Shape s : model.getShapes()) {
+						if(s instanceof Rectangle) {
+							if(rectangle.compareTo((Shape)s)==0) {
+								addToCommandStack(new SelectShapeCmd(s));
+							}
+						}
+					}
+					break;
+					
+				case "deselected":
+					
+					for(Shape s : model.getShapes()) {
+						if(s instanceof Rectangle) {
+							if(rectangle.compareTo((Shape)s)==0) {
+								
+								addToCommandStack(new DeselectShapeCmd(s));
+							}
+						}
+					}
+					break;
+					
+				case "Updated":
+					Rectangle newRectangle=new Rectangle(new Point(Integer.parseInt(command[33]),Integer.parseInt(command[34])), Integer.parseInt(command[38]),Integer.parseInt(command[42]), new Color(Integer.parseInt(command[44]),Integer.parseInt(command[45]),Integer.parseInt(command[46])), new Color(Integer.parseInt(command[49]),Integer.parseInt(command[50]),Integer.parseInt(command[51])));
+					for(Shape shape : model.getShapes()) {
+						if(shape instanceof Rectangle) {
+							if(rectangle.compareTo((Shape)shape)==0) {
+								addToCommandStack(new UpdateRectangleCmd((Rectangle)shape, newRectangle));
+							}
+						}
+					}
+					break;	
+
+				default:
+					break;
+				}
+				
+			}else if(command[1].contentEquals("Donut")) {
+				for (int i=0;i<command.length;i++) {
+					System.out.println(i+" "+command[i]);
+				}
+				String action = command[0];
+				Donut donut= new Donut(new Point(Integer.parseInt(command[4]),Integer.parseInt(command[5])), Integer.parseInt(command[8]),Integer.parseInt(command[10]), new Color(Integer.parseInt(command[12]),Integer.parseInt(command[13]),Integer.parseInt(command[14])), new Color(Integer.parseInt(command[17]),Integer.parseInt(command[18]),Integer.parseInt(command[19])));
+				System.out.println(donut.toString());
+				switch (action) {
+				
+				case "added":
+					
+					addToCommandStack(new AddShapeCmd(model, donut));
+					donut.addObserver(new ShapeObserver(frame, model));
+					break;
+				
+				case "selected":
+					
+					for(Shape s : model.getShapes()) {
+						if(s instanceof Donut) {
+							if(donut.compareTo((Shape)s)==0) {
+								addToCommandStack(new SelectShapeCmd(s));
+							}
+						}
+					}
+					break;
+					
+				case "deselected":
+					
+					for(Shape s : model.getShapes()) {
+						if(s instanceof Donut) {
+							if(donut.compareTo((Shape)s)==0) {
+								if(s.isSelected()) {
+								addToCommandStack(new DeselectShapeCmd(s));
+								}
+							}
+						}
+					}
+					break;
+					
+				case "Updated":
+					Donut newDonut=new Donut(new Point(Integer.parseInt(command[28]),Integer.parseInt(command[29])), Integer.parseInt(command[32]),Integer.parseInt(command[34]), new Color(Integer.parseInt(command[36]),Integer.parseInt(command[37]),Integer.parseInt(command[38])), new Color(Integer.parseInt(command[41]),Integer.parseInt(command[42]),Integer.parseInt(command[43])));
+					for(Shape shape : model.getShapes()) {
+						if(shape instanceof Donut) {
+							if(donut.compareTo((Shape)shape)==0) {
+								addToCommandStack(new UpdateDonutCmd((Donut)shape, newDonut));
+							}
+						}
+					}
+					break;	
+
+				default:
+					break;
+				}
+				
+			}else if(command[1].contentEquals("hexagon")) {
+				for (int i=0;i<command.length;i++) {
+					System.out.println(i+" "+command[i]);
+				}
+				String action = command[0];
+				Hexagon hexagon=new Hexagon(Integer.parseInt(command[4]),Integer.parseInt(command[5]), Integer.parseInt(command[7]));
+				HexagonAdapter hexagonAdapter = new HexagonAdapter(hexagon, new Color(Integer.parseInt(command[10]),Integer.parseInt(command[11]),Integer.parseInt(command[12])), new Color(Integer.parseInt(command[15]),Integer.parseInt(command[16]),Integer.parseInt(command[17])));
+				System.out.println(hexagonAdapter.toString());
+				switch (action) {
+				
+				case "added":
+					
+					addToCommandStack(new AddShapeCmd(model, hexagonAdapter));
+					hexagonAdapter.addObserver(new ShapeObserver(frame, model));
+					break;
+				
+				case "selected":
+					
+					for(Shape s : model.getShapes()) {
+						if(s instanceof HexagonAdapter) {
+							if(hexagonAdapter.compareTo((Shape)s)==0) {
+								addToCommandStack(new SelectShapeCmd(s));
+							}
+						}
+					}
+					break;
+				case "deselected":
+					
+					for(Shape s : model.getShapes()) {
+						if(s instanceof HexagonAdapter) {
+							if(hexagonAdapter.compareTo((Shape)s)==0) {
+								if(s.isSelected()) {
+								addToCommandStack(new DeselectShapeCmd(s));
+								}
+							}
+						}
+					}
+					break;
+					
+				case "Updated":
+					Hexagon newHexagon=new Hexagon(Integer.parseInt(command[24]),Integer.parseInt(command[25]), Integer.parseInt(command[27]));
+					HexagonAdapter newHexagonAdapter = new HexagonAdapter(newHexagon, new Color(Integer.parseInt(command[30]),Integer.parseInt(command[31]),Integer.parseInt(command[32])), new Color(Integer.parseInt(command[35]),Integer.parseInt(command[36]),Integer.parseInt(command[37])));
+					for(Shape shape : model.getShapes()) {
+						if(shape instanceof HexagonAdapter) {
+							if(hexagonAdapter.compareTo((Shape)shape)==0) {
+								addToCommandStack(new UpdateHexagonCmd((HexagonAdapter)shape, newHexagonAdapter));
+							}
+						}
+					}
+					break;	
+
+				default:
+					break;
+				}
+				
+			}
+			
+				String action = command[0];
+				switch (action) {
+				
+				case "undo":
+					undo();
+					break;
+					
+				case "redo":
+					redo();
+					break;
+					
+				case "ToFront":
+					toFront();
+					break;
+					
+				case "ToBack":
+					toBack();
+					break;
+				
+				case "removed":
+					ArrayList<Shape> shapes = new ArrayList<>();
+					for(Shape shape : model.getShapes()) {
+						if(shape.isSelected()) {
+							shapes.add(shape);
+						}
+					}
+					addToCommandStack(new RemoveShapeCmd(model, shapes));
+					break;
+					
+					
+
+
+				default:
+					break;
+				}
+			
+			
+			}
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+	}
+
+	
+private void nextLine() {
+		
+		try {
+			if(bufferedReader.readLine()==null)
+			{
+				frame.getBtnLoadNext().setEnabled(false);
+				bufferedReader.close();
+				
+			}
+			else
+			{
+				bufferedReader.reset();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	
+
+
 	
 	 
 	

@@ -86,6 +86,7 @@ public class FrmDrawing extends JFrame{
 	private JScrollPane scrollPane;
 	private JList<String> Loglist;
 	private JPanel logPanel;
+	private JButton btnLoadNext;
 
 	/**
 	 * Create the frame.
@@ -99,7 +100,7 @@ public class FrmDrawing extends JFrame{
 		setContentPane(contentPane);
 		setResizable(false);
 		setTitle("Bajic Mladen, IT46-2018");
-		view.setBounds(151, 95, 750, 517);
+		view.setBounds(151, 95, 669, 522);
 		
 		view.setLayout(null);
 		view.setBackground(Color.WHITE);
@@ -381,12 +382,12 @@ public class FrmDrawing extends JFrame{
 		frontBackPanel.setLayout(gl_frontBackPanel);
 		
 		logPanel = new JPanel();
-		logPanel.setBounds(911, 95, 168, 517);
+		logPanel.setBounds(830, 95, 249, 596);
 		logPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Log", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		logPanel.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 12, 168, 505);
+		scrollPane.setBounds(0, 12, 249, 584);
 		
 		scrollPane.setAutoscrolls(true);
 		
@@ -520,10 +521,10 @@ public class FrmDrawing extends JFrame{
 		contentPane.add(frontBackPanel);
 		contentPane.add(logPanel);
 		
-		JPanel savOpenPanel = new JPanel();
-		savOpenPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Undo/Redo", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		savOpenPanel.setBounds(911, 623, 168, 57);
-		contentPane.add(savOpenPanel);
+		JPanel saveOpenPanel = new JPanel();
+		saveOpenPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Save/Load", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		saveOpenPanel.setBounds(488, 623, 332, 68);
+		contentPane.add(saveOpenPanel);
 		
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
@@ -538,28 +539,47 @@ public class FrmDrawing extends JFrame{
 		btnSave.setEnabled(true);
 		
 		JButton btnOpen = new JButton("Open");
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Object[] possibleValues = { "Open Log", "Open Drawing"};
+				int selectedValue=JOptionPane.showOptionDialog(null, "Choose option", "Open",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, possibleValues, possibleValues[0]);
+				controller.open(selectedValue);
+			}
+		});
 		btnOpen.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnOpen.setEnabled(false);
-		GroupLayout gl_savOpenPanel = new GroupLayout(savOpenPanel);
-		gl_savOpenPanel.setHorizontalGroup(
-			gl_savOpenPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_savOpenPanel.createSequentialGroup()
+		btnOpen.setEnabled(true);
+		
+		btnLoadNext = new JButton("Load Next");
+		btnLoadNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.loadNext();
+			}
+		});
+		btnLoadNext.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnLoadNext.setEnabled(false);
+		GroupLayout gl_saveOpenPanel = new GroupLayout(saveOpenPanel);
+		gl_saveOpenPanel.setHorizontalGroup(
+			gl_saveOpenPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_saveOpenPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+					.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnOpen)
-					.addGap(8))
+					.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnLoadNext, GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+					.addContainerGap())
 		);
-		gl_savOpenPanel.setVerticalGroup(
-			gl_savOpenPanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 68, Short.MAX_VALUE)
-				.addGroup(gl_savOpenPanel.createSequentialGroup()
-					.addGroup(gl_savOpenPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+		gl_saveOpenPanel.setVerticalGroup(
+			gl_saveOpenPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_saveOpenPanel.createSequentialGroup()
+					.addGroup(gl_saveOpenPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_saveOpenPanel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnOpen, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnLoadNext, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		savOpenPanel.setLayout(gl_savOpenPanel);
+		saveOpenPanel.setLayout(gl_saveOpenPanel);
 		
 	
 		
@@ -743,4 +763,10 @@ public class FrmDrawing extends JFrame{
 	public void setDlm(DefaultListModel<String> dlm) {
 		this.dlm = dlm;
 	}
+
+
+	public JButton getBtnLoadNext() {
+		return btnLoadNext;
+	}
+	
 }

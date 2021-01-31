@@ -73,8 +73,18 @@ public class Circle extends SurfaceShape implements Cloneable{
 	
 
 	@Override
+	public int compareTo(Object o) {
+		if(o instanceof Circle)
+		{
+			return (int) (this.radius-((Circle) o).radius);
+		}
+		else 
+			return 0;
+	}
+
+	@Override
 	public String toString() {
-		return "Circle: center" + center.getCordinatesText()+"radius:"+ this.radius + getColorText() + getInnerColorText();
+		return "Circle:center" + center.getCordinatesText()+"radius:("+ this.radius+")"+ getColorText() + getInnerColorText();
 	}
 
 	@Override

@@ -51,7 +51,16 @@ public class Line extends Shape implements Cloneable{
 
 	}
 	
-	
+	@Override
+	public int compareTo(Object o) {
+		if(o instanceof Line)
+		{
+			return (int) (this.length()-((Line) o).length());
+		}
+		else {
+			return 0;
+		}
+	}
 	
 	
 	
@@ -103,5 +112,7 @@ public class Line extends Shape implements Cloneable{
 	public void setEndPoint(Point endPoint) {
 		this.endPoint = endPoint;
 	}
+
+	
 
 }

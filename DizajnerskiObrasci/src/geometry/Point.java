@@ -63,10 +63,23 @@ public class Point extends Shape implements Cloneable{
 	
 	
 	
+	
+	
+
+	@Override
+	public int compareTo(Object o) {
+		if(o instanceof Point) {
+			Point first = new Point(0, 0);
+			return (int) (this.distance(first.getX(),first.getY()) - ((Point) o).distance(first.getX(),first.getY()));
+		}
+		else
+			return 0;
+	}
+	
 
 	@Override
 	public String toString() {
-		return "Point: "+getCordinatesText()+ " " +getColorText();
+		return "Point"+getCordinatesText()+getColorText();
 	}
 	
 	public String getCordinatesText() {

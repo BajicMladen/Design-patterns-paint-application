@@ -103,10 +103,23 @@ public class Donut extends Circle implements Cloneable{
 	
 	
 	
+	
+	
+
+	@Override
+	public int compareTo(Object o) {
+		if(o instanceof Donut)
+		{
+			return (((Donut) o).getRadius()-getRadius())+(((Donut)o).getInnerRadius()-innerRadius);
+		
+		}
+		else 
+			return 0;
+	}
 
 	@Override
 	public String toString() {
-		return "Donut: center" + super.getCenter().getCordinatesText()+" radius:"+ getRadius()+" InnerRadius:"+ getInnerRadius() + getColorText() + getInnerColorText();
+		return "Donut: center" + super.getCenter().getCordinatesText()+" radius:"+ getRadius()+" InnerRadius:"+ getInnerRadius()+" "+ getColorText() + getInnerColorText();
 	}
 
 	@Override
