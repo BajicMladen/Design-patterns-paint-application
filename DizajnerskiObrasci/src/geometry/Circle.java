@@ -6,6 +6,10 @@ import java.awt.Graphics;
 
 public class Circle extends SurfaceShape implements Cloneable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int radius;
 	private Point center;
 
@@ -73,13 +77,13 @@ public class Circle extends SurfaceShape implements Cloneable{
 	
 
 	@Override
-	public int compareTo(Object o) {
+	public boolean compareTo(Object o) {
 		if(o instanceof Circle)
 		{
-			return (int) (this.radius-((Circle) o).radius);
+			return (getCenter().compareTo(((Circle) o).getCenter()) && getRadius()==((Circle)o).getRadius());
 		}
 		else 
-			return 0;
+			return false;
 	}
 
 	@Override

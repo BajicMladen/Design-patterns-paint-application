@@ -3,7 +3,6 @@ package adapter;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import geometry.Circle;
 import geometry.Point;
 import geometry.SurfaceShape;
 import hexagon.Hexagon;
@@ -11,6 +10,11 @@ import hexagon.Hexagon;
 
 public class HexagonAdapter extends SurfaceShape implements Cloneable{
 	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Hexagon hexagon;
 	
 	 public HexagonAdapter() {
@@ -31,13 +35,13 @@ public class HexagonAdapter extends SurfaceShape implements Cloneable{
 	
 
 	@Override
-	public int compareTo(Object o) {
+	public boolean compareTo(Object o) {
 		if(o instanceof HexagonAdapter)
 		{
-			return (int) (getR()-((HexagonAdapter) o).getR());
+			return (getX()==((HexagonAdapter)o).getX() && getY()==((HexagonAdapter)o).getY() && getR()==((HexagonAdapter)o).getR());
 		}
 		else 
-			return 0;
+			return false;
 	}
 
 	@Override

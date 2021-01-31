@@ -1,13 +1,11 @@
 package mvc;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
 
 import geometry.Shape;
-import geometry.SurfaceShape;
 
 @SuppressWarnings("serial")
 public class PnlDrawing extends JPanel {

@@ -243,8 +243,8 @@ public class DlgRectMod extends JDialog {
 		textHeight.setText(String.valueOf(rec.getHeight()));
 		textColor.setBackground(rec.getColor());
 		textInnerColor.setBackground(rec.getInnerColor());
-		color = rec.getInnerColor();
-		innerColor = rec.getColor();
+		color = rec.getColor();
+		innerColor = rec.getInnerColor();
 	}
 	
 	public void validation(String x, String y, String width, String height) {

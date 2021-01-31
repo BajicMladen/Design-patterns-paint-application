@@ -6,6 +6,10 @@ import java.awt.Graphics;
 
 public class Rectangle extends SurfaceShape  implements Cloneable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Point upperLeftPoint;
 	private int height;
 	private int width;
@@ -68,13 +72,13 @@ public class Rectangle extends SurfaceShape  implements Cloneable{
 	
 
 	@Override
-	public int compareTo(Object o) {
+	public boolean compareTo(Object o) {
 		if(o instanceof Rectangle)
 		{
-			return (int) (this.area()-((Rectangle) o).area());
+			return(getUpperLeftPoint().compareTo(((Rectangle) o).getUpperLeftPoint()) && getHeight()==((Rectangle)o).getHeight() && getWidth()==((Rectangle)o).getWidth());
 		}
 		else 
-			return 0;
+			return false;
 	}
 
 	@Override

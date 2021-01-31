@@ -36,7 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
-@SuppressWarnings("serial")
+
 public class FrmDrawing extends JFrame{
 
 	private static final long serialVersionUID = 1L;
@@ -124,7 +124,7 @@ public class FrmDrawing extends JFrame{
 		btnSetBcColor.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSetBcColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				shapeColor=JColorChooser.showDialog(null, "Color--BACKGROUND--Color", shapeColor);
+				shapeColor=JColorChooser.showDialog(null, "Color--BORDER--Color", shapeColor);
 				if(shapeColor==null) {
 					shapeColor=Color.BLACK;
 					textBcColor.setBackground(Color.BLACK);
@@ -217,7 +217,9 @@ public class FrmDrawing extends JFrame{
 		btnModify.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.modifyShape();
+				if(btnModify.isEnabled()) {
+					controller.modifyShape();
+				}
 			}
 		});
 		
@@ -226,8 +228,7 @@ public class FrmDrawing extends JFrame{
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (btnDelete.isEnabled()) {
-					
+				if (btnDelete.isEnabled()) {					
 						controller.deleteShape();
 				}
 			}
@@ -400,7 +401,6 @@ public class FrmDrawing extends JFrame{
 		
 		
 		scrollPane.setViewportView(Loglist);
-		
 		Loglist.setModel(dlm);
 		
 		
@@ -529,10 +529,9 @@ public class FrmDrawing extends JFrame{
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object[] possibleValues = { "Save Log", "Save Drawing"};
-				int selectedValue=JOptionPane.showOptionDialog(null, "Choose what to save!", "Save File",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, possibleValues, possibleValues[0]);
-			//	0-log 1-drawing
-				controller.save(selectedValue);
+				Object[] choice = { "Save Log", "Save Drawing"};
+				int optionChosen=JOptionPane.showOptionDialog(null, "Choose what to save!", "Save File",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, choice, choice[0]);
+				controller.save(optionChosen);
 			}
 		});
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -541,9 +540,9 @@ public class FrmDrawing extends JFrame{
 		JButton btnOpen = new JButton("Open");
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object[] possibleValues = { "Open Log", "Open Drawing"};
-				int selectedValue=JOptionPane.showOptionDialog(null, "Choose option", "Open",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, possibleValues, possibleValues[0]);
-				controller.open(selectedValue);
+				Object[] choice = { "Open Log", "Open Drawing"};
+				int optionChosen=JOptionPane.showOptionDialog(null, "Choose option", "Open",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, choice, choice[0]);
+				controller.open(optionChosen);
 			}
 		});
 		btnOpen.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -552,7 +551,9 @@ public class FrmDrawing extends JFrame{
 		btnLoadNext = new JButton("Load Next");
 		btnLoadNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.loadNext();
+				if(btnLoadNext.isEnabled()) {
+					controller.loadNext();
+				}
 			}
 		});
 		btnLoadNext.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -594,7 +595,7 @@ public class FrmDrawing extends JFrame{
 				}
 				
 				if(tglbtnDraw.isSelected()) {
-					controller.addShape(e,shapeColor,fillColor);
+					controller.addShape(e);
 				}
 				
 				

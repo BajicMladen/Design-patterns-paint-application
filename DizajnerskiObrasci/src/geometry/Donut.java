@@ -13,6 +13,10 @@ import geometry.Point;
 
 public class Donut extends Circle implements Cloneable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int innerRadius;
 
 	public Donut() {
@@ -107,14 +111,14 @@ public class Donut extends Circle implements Cloneable{
 	
 
 	@Override
-	public int compareTo(Object o) {
+	public boolean compareTo(Object o) {
 		if(o instanceof Donut)
 		{
-			return (((Donut) o).getRadius()-getRadius())+(((Donut)o).getInnerRadius()-innerRadius);
+			return (getCenter().compareTo(((Donut) o).getCenter()) && getRadius()==((Donut)o).getRadius() && getInnerRadius()==((Donut)o).getInnerRadius());
 		
 		}
 		else 
-			return 0;
+			return false;
 	}
 
 	@Override

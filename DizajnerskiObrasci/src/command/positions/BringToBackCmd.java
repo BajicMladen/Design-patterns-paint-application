@@ -1,6 +1,5 @@
 package command.positions;
 
-import javax.swing.JOptionPane;
 
 import command.Command;
 import geometry.Shape;
@@ -37,7 +36,7 @@ public class BringToBackCmd implements Command {
 
 	@Override
 	public String toString() {
-		return "BringToFront: " + shape.toString();
+		return "BringToFront:" + shape.toString();
 	}
 	
 	

@@ -5,6 +5,10 @@ import java.awt.Graphics;
 
 public class Point extends Shape implements Cloneable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int x;
 	private int y;
 	
@@ -67,13 +71,13 @@ public class Point extends Shape implements Cloneable{
 	
 
 	@Override
-	public int compareTo(Object o) {
+	public boolean compareTo(Object o) {
 		if(o instanceof Point) {
-			Point first = new Point(0, 0);
-			return (int) (this.distance(first.getX(),first.getY()) - ((Point) o).distance(first.getX(),first.getY()));
+			
+			return (getX()==((Point) o).getX() && getY()==((Point) o).getY());									
 		}
 		else
-			return 0;
+			return false;
 	}
 	
 

@@ -41,7 +41,7 @@ public class BringToFrontCmd implements Command {
 
 	@Override
 	public String toString() {
-		return "BringToBack: " + shape.toString();
+		return "BringToFront:" + shape.toString();
 	}
 	
 	

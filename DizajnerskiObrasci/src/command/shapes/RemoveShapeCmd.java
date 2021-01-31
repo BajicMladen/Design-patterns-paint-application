@@ -5,12 +5,10 @@ package command.shapes;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import javax.xml.soap.Text;
 
 import command.Command;
 import geometry.Shape;
 import mvc.DrawingModel;
-import observer.ShapeObserver;
 
 public class RemoveShapeCmd implements Command {
 	private DrawingModel model;

@@ -5,7 +5,11 @@ import java.awt.Graphics;
 
 public abstract class SurfaceShape extends Shape {
 
-	//Inseide color of rectangel,circle,Donut and Hexagon
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//Inseide color of Rectangel,circle, Donut and Hexagon
 	private Color innerColor;
 	
 	

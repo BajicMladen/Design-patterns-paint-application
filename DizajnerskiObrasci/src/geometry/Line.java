@@ -7,6 +7,10 @@ import geometry.Point;
 
 public class Line extends Shape implements Cloneable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Point startPoint;
 	private Point endPoint;
 
@@ -52,13 +56,13 @@ public class Line extends Shape implements Cloneable{
 	}
 	
 	@Override
-	public int compareTo(Object o) {
+	public boolean compareTo(Object o) {
 		if(o instanceof Line)
 		{
-			return (int) (this.length()-((Line) o).length());
+			return (startPoint.compareTo(((Line) o).getStartPoint()) && endPoint.compareTo(((Line) o).getEndPoint()));							
 		}
 		else {
-			return 0;
+			return false;
 		}
 	}
 	

@@ -10,7 +10,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import geometry.Point;
 import geometry.Line;
 
 import javax.swing.GroupLayout;

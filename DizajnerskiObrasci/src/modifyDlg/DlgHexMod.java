@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import adapter.HexagonAdapter;
-import geometry.Circle;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
