@@ -66,15 +66,12 @@ public class Point extends Shape implements Cloneable{
 	}
 	
 	
-	
-	
-	
 
 	@Override
 	public boolean compareTo(Object o) {
 		if(o instanceof Point) {
 			
-			return (getX()==((Point) o).getX() && getY()==((Point) o).getY());									
+			return (getX()==((Point) o).getX() && getY()==((Point) o).getY());	// Comparing two points  based of point cordinates								
 		}
 		else
 			return false;

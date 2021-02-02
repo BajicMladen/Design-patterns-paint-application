@@ -73,9 +73,9 @@ public class DlgDonutMod extends JDialog {
 		label_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		JLabel lblInnerRadius = new JLabel("Inner radius-->");
 		lblInnerRadius.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		JButton button = new JButton("Color->>");
-		button.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		button.addActionListener(new ActionListener() {
+		JButton btnBorderColor = new JButton("Border Color->>");
+		btnBorderColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnBorderColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				color = JColorChooser.showDialog(null, "Color--Select Circle Color--Color",  donut.getColor());
 				if(color == null) { 
@@ -84,9 +84,9 @@ public class DlgDonutMod extends JDialog {
 				textColor.setBackground(color);
 			}
 		});
-		JButton button_1 = new JButton("Inner color->>");
-		button_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		button_1.addActionListener(new ActionListener() {
+		JButton btnFillColor = new JButton("Fill Color->>");
+		btnFillColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnFillColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				innerColor = JColorChooser.showDialog(null, "Color--Select Inner Donut Color--Color", donut.getInnerColor());
 				if(innerColor == null) { 
@@ -126,8 +126,8 @@ public class DlgDonutMod extends JDialog {
 						.addComponent(lblDonutXCoordinate, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblCenterXcoordinate)
 						.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(button, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(button_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+							.addComponent(btnBorderColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(btnFillColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
 					.addGap(43)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(textInnerRadius, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -164,9 +164,9 @@ public class DlgDonutMod extends JDialog {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(textInnerColor, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addComponent(button, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnBorderColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnFillColor, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);

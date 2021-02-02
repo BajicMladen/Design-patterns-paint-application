@@ -21,32 +21,29 @@ public class HexagonAdapter extends SurfaceShape implements Cloneable{
 			
 		}
 	
-	 public HexagonAdapter(Hexagon h) {
-		this.hexagon=h;
+	 public HexagonAdapter(Hexagon hexagon) {
+		this.hexagon=hexagon;
 	}
 	 
-	 public HexagonAdapter(Hexagon h,Color color,Color innerColor) {
-			this.hexagon=h;
+	 public HexagonAdapter(Hexagon hexagon,Color color,Color innerColor) {
+			this.hexagon=hexagon;
 			this.setColor(color);
 			this.setInnerColor(innerColor);
 		}
 	 
-	 
-	
+
+	 	
 
 	@Override
 	public boolean compareTo(Object o) {
 		if(o instanceof HexagonAdapter)
 		{
-			return (getX()==((HexagonAdapter)o).getX() && getY()==((HexagonAdapter)o).getY() && getR()==((HexagonAdapter)o).getR());
+			return (getX()==((HexagonAdapter)o).getX() && getY()==((HexagonAdapter)o).getY() && getR()==((HexagonAdapter)o).getR()); //Compare center and radius
 		}
 		else 
 			return false;
 	}
 
-	@Override
-	public void fill(Graphics g) {				
-	}
 
 	@Override
 	public boolean contains(int x, int y) {
@@ -59,10 +56,6 @@ public class HexagonAdapter extends SurfaceShape implements Cloneable{
 		
 	}
 
-	@Override
-	public void selected(Graphics g) {
-		
-	}
 		
 	@Override
 	public void setSelected(boolean selected) {
@@ -71,8 +64,6 @@ public class HexagonAdapter extends SurfaceShape implements Cloneable{
 	}
 	
 	
-	
-
 	
 	@Override
 	public String toString() {
@@ -104,6 +95,14 @@ public class HexagonAdapter extends SurfaceShape implements Cloneable{
 		
 		return hexClone;
 		
+	}
+	
+	@Override
+	public void selected(Graphics g) {		
+	}
+	
+	@Override
+	public void fill(Graphics g) {				
 	}
 
 	public void setInnerColor(Color innerColor) {

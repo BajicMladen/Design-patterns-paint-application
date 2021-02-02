@@ -1,11 +1,10 @@
 package command.positions;
 
-import javax.swing.JOptionPane;
 
 import command.Command;
 import geometry.Shape;
 import mvc.DrawingModel;
-
+//Command for moving shape all way to front
 public class BringToFrontCmd implements Command {
 	private DrawingModel model;
 	private Shape shape;
@@ -19,20 +18,14 @@ public class BringToFrontCmd implements Command {
 	
 
 	@Override
-	public void execute() {
-		if(index == model.getShapes().size()-1) {
-			
-			JOptionPane.showMessageDialog(null, "Element is already on top");
-		}
-		else {
+	public void execute() {		
 			model.remove(shape);
-			model.add(shape);
-		}
+			model.add(shape);		
 
 	}
 
 	@Override
-	public void unexecute() {
+	public void unexecute() {//Undo 
 		model.remove(shape);
 		model.getShapes().add(index,shape);
 
@@ -40,7 +33,7 @@ public class BringToFrontCmd implements Command {
 
 
 	@Override
-	public String toString() {
+	public String toString() {//For log
 		return "BringToFront:" + shape.toString();
 	}
 	

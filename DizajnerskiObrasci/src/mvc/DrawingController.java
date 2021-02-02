@@ -85,7 +85,7 @@ public class DrawingController implements Serializable{
 	 public void addShape(MouseEvent e) {
 		 
 		 Point mouseClick = new Point(e.getX(),e.getY());
-		 if(frame.getTgbtnPoint().isSelected()) {
+		 if(frame.getTgbtnPoint().isSelected()) { //IF point button is active 
 			 Point point = new Point(e.getX(),e.getY(),frame.getShapeColor());
 			 
 			 addToCommandStack(new AddShapeCmd(model, point));
@@ -94,8 +94,8 @@ public class DrawingController implements Serializable{
 			 
 			
 		 }
-		 else if(frame.getTgbtnLine().isSelected()) {
-			 if(pointOne == null) {
+		 else if(frame.getTgbtnLine().isSelected()) { //IF line button is active  
+			 if(pointOne == null) { // check if user clicked first time on panel
 				pointOne = new Point(e.getX(),e.getY());
 			 }else {
 				 
@@ -121,7 +121,7 @@ public class DrawingController implements Serializable{
 			
 			}
 			 
-		 }else if(frame.getTgbtnCircle().isSelected()) {
+		 }else if(frame.getTgbtnCircle().isSelected()) { //IF circle button is active 
 			 DlgDrawCircle drawCircle=new DlgDrawCircle();
 			 drawCircle.setVisible(true);
 			 
@@ -135,7 +135,7 @@ public class DrawingController implements Serializable{
 				
 			 }
 			 
-		 }else if(frame.getTgbtnDonut().isSelected()) {
+		 }else if(frame.getTgbtnDonut().isSelected()) { //IF donut button is active 
 			 DlgDrawDonut drawDonut = new DlgDrawDonut();
 			 drawDonut.setVisible(true);
 			 
@@ -148,7 +148,7 @@ public class DrawingController implements Serializable{
 				 
 			 }
 			 
-		 }else if(frame.getTgbtnHexagon().isSelected()) {
+		 }else if(frame.getTgbtnHexagon().isSelected()) { //IF hexagon button is active 
 			 DlgDrawHex drawHex = new DlgDrawHex();
 			 drawHex.setVisible(true);
 			 
@@ -215,7 +215,7 @@ public class DrawingController implements Serializable{
 		 
 		 frame.getBtnUndo().setEnabled(true);
 		 
-		 if(undoRedoStackPointer+1>=undoRedoStack.size()) {
+		 if(undoRedoStackPointer>=undoRedoStack.size()-1) {
 			 frame.getBtnRedo().setEnabled(false);
 		 }
 		 
@@ -260,7 +260,7 @@ public class DrawingController implements Serializable{
 			 DlgPointMod modPoint = new DlgPointMod();
 			 modPoint.fillAll((Point)shapeToModify);
 			 modPoint.setVisible(true);
-			 if(modPoint.isFlag()==true) {
+			 if(modPoint.isFlag()) {
 				 Point point = new Point(modPoint.getX(),modPoint.getY(),modPoint.getColor());
 				 addToCommandStack(new UpdatePointCmd((Point)shapeToModify,point));
 			 }
@@ -268,7 +268,7 @@ public class DrawingController implements Serializable{
 			 DlgLineMod modLine = new DlgLineMod();
 			 modLine.fillAll((Line)shapeToModify);
 			 modLine.setVisible(true);
-			 if(modLine.isFlag()==true) {
+			 if(modLine.isFlag()) {
 			 Line line =new Line(new Point(modLine.getStartX(),modLine.getStartY()),new Point(modLine.getEndX(),modLine.getEndY()),modLine.getColor());
 			 addToCommandStack(new UpdateLineCmd((Line)shapeToModify, line));
 			 }
@@ -277,7 +277,7 @@ public class DrawingController implements Serializable{
 			 DlgRectMod modRec=new DlgRectMod();
 			modRec.fillAll((Rectangle)shapeToModify);
 			modRec.setVisible(true);
-			if(modRec.isFlag()==true) {
+			if(modRec.isFlag()) {
 				Rectangle rectangle = new Rectangle(new Point(modRec.getX(),modRec.getY()),modRec.getHeightRec(),modRec.getWidthRec(),modRec.getColor(),modRec.getInnerColor());
 				addToCommandStack(new UpdateRectangleCmd((Rectangle)shapeToModify, rectangle));
 			}
@@ -287,7 +287,7 @@ public class DrawingController implements Serializable{
 			 DlgDonutMod modDon=new DlgDonutMod();
 				modDon.fillAll((Donut)shapeToModify);
 				modDon.setVisible(true);
-				if(modDon.isFlag()==true) {
+				if(modDon.isFlag()) {
 					Donut donut = new Donut(new Point(modDon.getX(),modDon.getY()),modDon.getRadius(),modDon.getInnerRadius(),modDon.getColor(),modDon.getInnerColor());
 					addToCommandStack(new UpdateDonutCmd((Donut)shapeToModify,donut));
 				}
@@ -297,7 +297,7 @@ public class DrawingController implements Serializable{
 			 DlgCircleMod modCircle=new DlgCircleMod();
 				modCircle.fillAll((Circle)shapeToModify);
 				modCircle.setVisible(true);
-				if(modCircle.isFlag()==true) {
+				if(modCircle.isFlag()) {
 					Circle circle = new Circle(new Point(modCircle.getX(),modCircle.getY()),modCircle.getRadius(),modCircle.getColor(),modCircle.getInnerColor());
 					addToCommandStack(new UpdateCircleCmd((Circle)shapeToModify,circle));
 				 }
@@ -307,7 +307,7 @@ public class DrawingController implements Serializable{
 			 DlgHexMod modHex = new DlgHexMod();
 			 modHex.fillAll((HexagonAdapter)shapeToModify);
 			 modHex.setVisible(true);
-			 if(modHex.isFlag()==true) {
+			 if(modHex.isFlag()) {
 				 Hexagon hexagon = new Hexagon(modHex.getX(), modHex.getY(), modHex.getRadius());
 				 HexagonAdapter hexagonAdapter = new HexagonAdapter(hexagon,modHex.getColor(),modHex.getInnerColor());
 				 addToCommandStack(new UpdateHexagonCmd((HexagonAdapter)shapeToModify, hexagonAdapter));
@@ -358,15 +358,16 @@ public class DrawingController implements Serializable{
 			if(shape.isSelected()) {				
 				
 				if(model.getShapes().indexOf(shape)==model.getShapes().size()-1) {
-					JOptionPane.showMessageDialog(null, "Element is alrady in front!");// checking if shape is on top already	
-					
-					frame.repaint();
+					JOptionPane.showMessageDialog(null, "Element is alrady in front!");// checking if shape is on top already						
+					break;
 					
 				}else {
+					if(model.getShapes().indexOf(shape)!=model.getShapes().size()-1) {
 					addToCommandStack(new ToFrontCmd(model, shape));
 					
 					frame.repaint();
 					break;
+					}
 				}
 																													
 			}
@@ -385,6 +386,7 @@ public class DrawingController implements Serializable{
 				
 				if(model.getShapes().indexOf(shape)==0) { // checking if shape is on bottom already
 					JOptionPane.showMessageDialog(null, "Element is alrady in back!");
+					break;
 															
 				}else {
 					addToCommandStack(new ToBackCmd(model, shape));
@@ -407,8 +409,9 @@ public class DrawingController implements Serializable{
 				if(model.getShapes().indexOf(shape)==0) {
 					
 					JOptionPane.showMessageDialog(null, "Element is alrady in back!"); // checking if shape is on bottom already				
-					
+					break;
 				}else {
+				
 					addToCommandStack(new BringToBackCmd(model, shape));
 					
 					break;
@@ -427,7 +430,7 @@ public class DrawingController implements Serializable{
 				
 				if(model.getShapes().indexOf(shape)==model.getShapes().size()-1) {
 					JOptionPane.showMessageDialog(null, "Element is alrady in front!");	// checking if shape is on top already				
-					
+					break;
 					
 				}else {
 					addToCommandStack(new BringToFrontCmd(model, shape));
@@ -457,7 +460,7 @@ public class DrawingController implements Serializable{
 	
 	//Method for loading .ser or .log file
 	public void open(int selectedOption) {
-		if(selectedOption==0)
+		if(selectedOption==0) // Log option chosen
 		{
 			JFileChooser jfc=new JFileChooser("C:\\Users\\Korisnik\\Desktop");
 			jfc.setFileFilter(new FileNameExtensionFilter("log file (.log)", "log"));
@@ -467,8 +470,8 @@ public class DrawingController implements Serializable{
 		        	File logFile=new File(jfc.getSelectedFile().getAbsolutePath());
 		        	try 
 		        	{
-		        		
-		        		frame.getBtnUndo().setEnabled(false);
+		        		//returning to initial state
+		        		frame.getBtnUndo().setEnabled(false); 
 		        		undoRedoStack.clear();
 						undoRedoStackPointer=-1;
 						model.getShapes().clear();
@@ -477,6 +480,7 @@ public class DrawingController implements Serializable{
 		        		frame.getBtnLoadNext().setEnabled(true);
 		        		frame.getBtnLoadNext().setEnabled(true);
 		        		bufferedReader = new BufferedReader(new FileReader(logFile));
+		        		frame.repaint();
 		        	} catch (Exception ex) 
 		        	{
 		                ex.printStackTrace();
@@ -485,7 +489,7 @@ public class DrawingController implements Serializable{
 		
 		}
 		}
-		else if(selectedOption==1)
+		else if(selectedOption==1) // Drawing option chosen
 		{
 			JFileChooser jfc=new JFileChooser("C:\\Users\\Korisnik\\Desktop");
 			jfc.setFileFilter(new FileNameExtensionFilter("ser file (.ser)", "ser"));
@@ -541,13 +545,13 @@ public class DrawingController implements Serializable{
 				Point point = new Point(Integer.parseInt(command[2]),Integer.parseInt(command[3]),new Color(Integer.parseInt(command[5]),Integer.parseInt(command[6]),Integer.parseInt(command[7])));
 					switch (action) {
 					
-					case "added":
+					case "Added":
 						
 						addToCommandStack(new AddShapeCmd(model, point));
 						point.addObserver(new ShapeObserver(frame, model));
 						break;
 					
-					case "selected":
+					case "Selected":
 						
 						for(Shape s : model.getShapes()) {
 							if(s instanceof Point) {
@@ -558,7 +562,7 @@ public class DrawingController implements Serializable{
 						}
 						break;
 						
-					case "deselected":
+					case "Deselected":
 						
 						for(Shape s : model.getShapes()) {
 							if(s instanceof Point) {
@@ -590,13 +594,13 @@ public class DrawingController implements Serializable{
 					Line line = new Line(new Point(Integer.parseInt(command[3]),Integer.parseInt(command[4])),new Point(Integer.parseInt(command[6]),Integer.parseInt(command[7])),new Color(Integer.parseInt(command[9]),Integer.parseInt(command[10]),Integer.parseInt(command[11])));
 					switch (action) {
 					
-					case "added":
+					case "Added":
 						
 						addToCommandStack(new AddShapeCmd(model, line));
 						line.addObserver(new ShapeObserver(frame, model));
 						break;
 					
-					case "selected":
+					case "Selected":
 						
 						for(Shape s : model.getShapes()) {
 							if(s instanceof Line) {
@@ -607,7 +611,7 @@ public class DrawingController implements Serializable{
 						}
 						break;
 						
-					case "deselected":
+					case "Deselected":
 						
 						for(Shape s : model.getShapes()) {
 							if(s instanceof Line) {
@@ -640,13 +644,13 @@ public class DrawingController implements Serializable{
 				Circle circle=new Circle(new Point(Integer.parseInt(command[3]),Integer.parseInt(command[4])), Integer.parseInt(command[7]), new Color(Integer.parseInt(command[9]),Integer.parseInt(command[10]),Integer.parseInt(command[11])), new Color(Integer.parseInt(command[14]),Integer.parseInt(command[15]),Integer.parseInt(command[16])));
 				switch (action) {
 				
-				case "added":
+				case "Added":
 					
 					addToCommandStack(new AddShapeCmd(model, circle));
 					circle.addObserver(new ShapeObserver(frame, model));
 					break;
 				
-				case "selected":
+				case "Selected":
 					
 					for(Shape s : model.getShapes()) {
 						if(s instanceof Circle) {
@@ -657,7 +661,7 @@ public class DrawingController implements Serializable{
 					}
 					break;
 					
-				case "deselected":
+				case "Deselected":
 					
 					for(Shape s : model.getShapes()) {
 						if(s instanceof Circle) {
@@ -691,13 +695,13 @@ public class DrawingController implements Serializable{
 				
 				switch (action) {
 				
-				case "added":
+				case "Added":
 					
 					addToCommandStack(new AddShapeCmd(model, rectangle));
 					rectangle.addObserver(new ShapeObserver(frame, model));
 					break;
 				
-				case "selected":
+				case "Selected":
 					
 					for(Shape s : model.getShapes()) {
 						if(s instanceof Rectangle) {
@@ -708,7 +712,7 @@ public class DrawingController implements Serializable{
 					}
 					break;
 					
-				case "deselected":
+				case "Deselected":
 					
 					for(Shape s : model.getShapes()) {
 						if(s instanceof Rectangle) {
@@ -742,13 +746,13 @@ public class DrawingController implements Serializable{
 				
 				switch (action) {
 				
-				case "added":
+				case "Added":
 					
 					addToCommandStack(new AddShapeCmd(model, donut));
 					donut.addObserver(new ShapeObserver(frame, model));
 					break;
 				
-				case "selected":
+				case "Selected":
 					
 					for(Shape s : model.getShapes()) {
 						if(s instanceof Donut) {
@@ -759,7 +763,7 @@ public class DrawingController implements Serializable{
 					}
 					break;
 					
-				case "deselected":
+				case "Deselected":
 					
 					for(Shape s : model.getShapes()) {
 						if(s instanceof Donut) {
@@ -795,13 +799,13 @@ public class DrawingController implements Serializable{
 				
 				switch (action) {
 				
-				case "added":
+				case "Added":
 					
 					addToCommandStack(new AddShapeCmd(model, hexagonAdapter));
 					hexagonAdapter.addObserver(new ShapeObserver(frame, model));
 					break;
 				
-				case "selected":
+				case "Selected":
 					
 					for(Shape s : model.getShapes()) {
 						if(s instanceof HexagonAdapter) {
@@ -811,7 +815,7 @@ public class DrawingController implements Serializable{
 						}
 					}
 					break;
-				case "deselected":
+				case "Deselected":
 					
 					for(Shape s : model.getShapes()) {
 						if(s instanceof HexagonAdapter) {
@@ -868,7 +872,7 @@ public class DrawingController implements Serializable{
 					bringToBack();
 					break;
 				
-				case "removed": //removing selected shapes, if you add shape between load next iterations, deletes it too.
+				case "Removed": //removing selected shapes, if you add shape between load next iterations, deletes it too.
 					ArrayList<Shape> shapes = new ArrayList<>();
 					for(Shape shape : model.getShapes()) {
 						if(shape.isSelected()) {
@@ -889,7 +893,7 @@ public class DrawingController implements Serializable{
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Error while opening the file.", "Error!",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error while opening the file! Please contact developer!", "Error!",JOptionPane.ERROR_MESSAGE);
 			
 		}
 	}
@@ -901,6 +905,7 @@ public class DrawingController implements Serializable{
 			if(bufferedReader.readLine()==null)
 			{
 				frame.getBtnLoadNext().setEnabled(false);
+				frame.getBtnLoadNext().setVisible(false);
 				bufferedReader.close();
 				
 			}

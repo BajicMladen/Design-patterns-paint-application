@@ -3,7 +3,7 @@ package mvc;
 import javax.swing.JFrame;
 
 public class Application {
-
+	//Start point of application
 	public static void main(String[] args) {
 		DrawingModel model=new DrawingModel();
 		FrmDrawing frame = new FrmDrawing();

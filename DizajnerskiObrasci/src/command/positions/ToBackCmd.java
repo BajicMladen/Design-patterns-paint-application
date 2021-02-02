@@ -10,7 +10,7 @@ public class ToBackCmd implements Command {
 	private DrawingModel model;
 	private int index;
 	private Shape shape;
-	
+	//Moving shape one position under
 	public ToBackCmd(DrawingModel model,Shape shape) {
 		this.model=model;
 		this.shape=shape;
@@ -25,7 +25,7 @@ public class ToBackCmd implements Command {
 	}
 
 	@Override
-	public void unexecute() {
+	public void unexecute() {//For undo
 		this.index = model.getShapes().indexOf(shape);
 		Collections.swap(model.getShapes(), index, index+1);
 
@@ -33,7 +33,7 @@ public class ToBackCmd implements Command {
 
 
 	@Override
-	public String toString() {
+	public String toString() {//For log
 		return "ToBack : " + shape.toString();
 	}
 	

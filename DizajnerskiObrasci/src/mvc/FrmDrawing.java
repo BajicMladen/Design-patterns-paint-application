@@ -55,6 +55,8 @@ public class FrmDrawing extends JFrame{
 
 	private DefaultListModel<String> dlm = new DefaultListModel<String>(); 
 	
+	
+	//Buttons for shapes
 	private JToggleButton tgbtnPoint;
 	private JToggleButton tgbtnLine;
 	private JToggleButton tgbtnCircle;
@@ -62,20 +64,23 @@ public class FrmDrawing extends JFrame{
 	private JToggleButton tgbtnDonut;
 	private JToggleButton tgbtnHexagon;
 	
-	
+	// Buttons for color panel
 	private JButton btnSetBcColor;
 	private JButton btnSetFillColor;
 	
+	//Buttons for modify i delete
 	private JButton btnModify;
 	private JButton btnDelete;
 	
+	//Buttons for mode of work
 	private JToggleButton tglbtnDraw;
 	private JToggleButton tglbtnSelect;
 	
+	//Undo and Redo buttons
 	private JButton btnUndo;
 	private JButton btnRedo;
 	
-	
+	//Buttons for position
 	private JButton btnToFront;
 	private JButton btnToBack;
 	private JButton btnBringToFront;
@@ -83,6 +88,8 @@ public class FrmDrawing extends JFrame{
 	
 	private JButton btnSave;
 	
+	
+	// components for log part of frame
 	private JScrollPane scrollPane;
 	private JList<String> Loglist;
 	private JPanel logPanel;
@@ -106,20 +113,25 @@ public class FrmDrawing extends JFrame{
 		view.setBackground(Color.WHITE);
 		contentPane.add(view,BorderLayout.CENTER);
 		
+		//Panel with all shapes buttons
 		JPanel ShapesBtnPanel = new JPanel();
 		ShapesBtnPanel.setBounds(15, 16, 126, 342);
 		ShapesBtnPanel.setBackground(UIManager.getColor("Button.background"));
 		ShapesBtnPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Shapes", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
+		//Pannel for mode--draw or select
 		JPanel modePanel = new JPanel();
 		modePanel.setBounds(15, 364, 125, 119);
 		modePanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Mode", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
+		//Border color panel
 		JPanel bColorPanel = new JPanel();
 		bColorPanel.setBounds(151, 16, 202, 72);
 		bColorPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Border Color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		bColorPanel.setBackground(SystemColor.menu);
 		
+		
+		//Button for setting border color 
 		btnSetBcColor = new JButton("Set Color");
 		btnSetBcColor.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSetBcColor.addActionListener(new ActionListener() {
@@ -160,6 +172,8 @@ public class FrmDrawing extends JFrame{
 		);
 		bColorPanel.setLayout(gl_bColorPanel);
 		
+		
+		//Button for setting fill color 
 		JPanel fColorPanel = new JPanel();
 		fColorPanel.setBounds(359, 16, 192, 73);
 		fColorPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Fill Color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -207,11 +221,14 @@ public class FrmDrawing extends JFrame{
 		);
 		fColorPanel.setLayout(gl_fColorPanel);
 		
+		
+		//Panel for Modify and Delete button
 		JPanel actonPanel = new JPanel();
 		actonPanel.setBounds(15, 494, 126, 118);
 		actonPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Action", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		actonPanel.setBackground(SystemColor.menu);
 		
+		//Modify button
 		btnModify = new JButton("Modify");
 		btnModify.setEnabled(false);
 		btnModify.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -223,6 +240,7 @@ public class FrmDrawing extends JFrame{
 			}
 		});
 		
+		//Delete button
 		btnDelete = new JButton("Delete");
 		btnDelete.setEnabled(false);
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -255,10 +273,12 @@ public class FrmDrawing extends JFrame{
 		);
 		actonPanel.setLayout(gl_actonPanel);
 		
+		//Panel for undo and redo button
 		JPanel undoRedoPanel = new JPanel();
 		undoRedoPanel.setBounds(15, 623, 221, 68);
 		undoRedoPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Undo/Redo", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
+		//Undo button
 		btnUndo = new JButton("Undo");
 		btnUndo.setEnabled(false);
 		btnUndo.addActionListener(new ActionListener() {
@@ -271,6 +291,7 @@ public class FrmDrawing extends JFrame{
 		});
 		btnUndo.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
+		//Redo button
 		btnRedo = new JButton("Redo");
 		btnRedo.setEnabled(false);
 		btnRedo.addActionListener(new ActionListener() {
@@ -301,11 +322,13 @@ public class FrmDrawing extends JFrame{
 		);
 		undoRedoPanel.setLayout(gl_undoRedoPanel);
 		
+		//Pannel for position change button
 		JPanel frontBackPanel = new JPanel();
 		frontBackPanel.setBounds(561, 16, 518, 73);
 		frontBackPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Position", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		frontBackPanel.setBackground(SystemColor.menu);
 		
+		// Button to move shape one place up
 		btnToFront = new JButton("To Front");
 		btnToFront.setEnabled(false);
 		btnToFront.addActionListener(new ActionListener() {
@@ -319,6 +342,7 @@ public class FrmDrawing extends JFrame{
 		});
 		btnToFront.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
+		// Button to move shape one place down
 		btnToBack = new JButton("To Back");
 		btnToBack.setEnabled(false);
 		btnToBack.addActionListener(new ActionListener() {
@@ -332,6 +356,7 @@ public class FrmDrawing extends JFrame{
 		});
 		btnToBack.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
+		// Button to move shape on top
 		btnBringToFront = new JButton("Bring to front");
 		btnBringToFront.setEnabled(false);
 		btnBringToFront.addActionListener(new ActionListener() {
@@ -344,6 +369,7 @@ public class FrmDrawing extends JFrame{
 		});
 		btnBringToFront.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
+		// Button to move shape on bottom
 		btnBringToBack = new JButton("Bring to back");
 		btnBringToBack.setEnabled(false);
 		btnBringToBack.addActionListener(new ActionListener() {
@@ -382,29 +408,33 @@ public class FrmDrawing extends JFrame{
 		);
 		frontBackPanel.setLayout(gl_frontBackPanel);
 		
+		//Log panel setup
 		logPanel = new JPanel();
 		logPanel.setBounds(830, 95, 249, 596);
 		logPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Log", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		logPanel.setLayout(null);
 		
+		//scroll pane for log panel
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 12, 249, 584);
 		
 		scrollPane.setAutoscrolls(true);
 		
-		logPanel.add(scrollPane);
+		logPanel.add(scrollPane); //Setting scroll pane to logPanel
 		
+		//Log list for all logs 
 		Loglist = new JList<String>();
 		Loglist.setBackground(SystemColor.controlLtHighlight);
 		Loglist.setBounds(16, 450, 148, 479);
 		;
 		
 		
-		scrollPane.setViewportView(Loglist);
+		scrollPane.setViewportView(Loglist); // adding logList to scrollPane for logging
 		Loglist.setModel(dlm);
 		
 		
 		contentPane.add(undoRedoPanel);				
+		
 		
 		tglbtnDraw = new JToggleButton("Draw");
 		tglbtnDraw.setSelected(true);
@@ -447,25 +477,55 @@ public class FrmDrawing extends JFrame{
 		modePanel.setLayout(gl_modePanel);
 		
 		tgbtnPoint = new JToggleButton("Point");
+		tgbtnPoint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnDraw.setSelected(true);
+			}
+		});
 		tgbtnPoint.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		tgbtnPoint.setForeground(Color.BLACK);
 		tgbtnPoint.setBackground(UIManager.getColor("Button.darkShadow"));
 		
 		tgbtnLine = new JToggleButton("Line");
+		tgbtnLine.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnDraw.setSelected(true);
+			}
+		});
 		tgbtnLine.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		tgbtnLine.setBackground(UIManager.getColor("Button.darkShadow"));
 		
 		tgbtnRectangle = new JToggleButton("Rectangle");
+		tgbtnRectangle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnDraw.setSelected(true);
+			}
+		});
 		tgbtnRectangle.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		tgbtnRectangle.setBackground(UIManager.getColor("Button.darkShadow"));
 		
 		tgbtnCircle = new JToggleButton("Circle");
+		tgbtnCircle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnDraw.setSelected(true);
+			}
+		});
 		tgbtnCircle.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
 		tgbtnDonut = new JToggleButton("Donut");
+		tgbtnDonut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnDraw.setSelected(true);
+			}
+		});
 		tgbtnDonut.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
 		tgbtnHexagon = new JToggleButton("Hexagon");
+		tgbtnHexagon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tglbtnDraw.setSelected(true);
+			}
+		});
 		tgbtnHexagon.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
 		GroupLayout gl_ShapesBtnPanel = new GroupLayout(ShapesBtnPanel);
@@ -500,6 +560,8 @@ public class FrmDrawing extends JFrame{
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		ShapesBtnPanel.setLayout(gl_ShapesBtnPanel);
+		
+		//Shapes button group
 		btnG.add(tgbtnPoint);
 		btnG.add(tgbtnLine);
 		btnG.add(tgbtnRectangle);
@@ -507,6 +569,7 @@ public class FrmDrawing extends JFrame{
 		btnG.add(tgbtnDonut);
 		btnG.add(tgbtnHexagon);
 		
+		//Mode button group
 		btnG1.add(tglbtnDraw);
 		btnG1.add(tglbtnSelect);
 		
@@ -521,34 +584,41 @@ public class FrmDrawing extends JFrame{
 		contentPane.add(frontBackPanel);
 		contentPane.add(logPanel);
 		
+		//Panel for saving and loading buttons
 		JPanel saveOpenPanel = new JPanel();
 		saveOpenPanel.setBorder(new TitledBorder(new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), new BevelBorder(BevelBorder.LOWERED, null, null, null, null)), "Save/Load", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		saveOpenPanel.setBounds(488, 623, 332, 68);
 		contentPane.add(saveOpenPanel);
 		
+		
+		//Button for saving log or ser
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object[] choice = { "Save Log", "Save Drawing"};
-				int optionChosen=JOptionPane.showOptionDialog(null, "Choose what to save!", "Save File",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, choice, choice[0]);
+				int optionChosen=JOptionPane.showOptionDialog(null, "Choose What To Save!", "Save File!",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, choice, choice[0]);
 				controller.save(optionChosen);
 			}
 		});
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSave.setEnabled(true);
 		
+		//Open button for loading from files
 		JButton btnOpen = new JButton("Open");
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object[] choice = { "Open Log", "Open Drawing"};
-				int optionChosen=JOptionPane.showOptionDialog(null, "Choose option", "Open",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, choice, choice[0]);
+				int optionChosen=JOptionPane.showOptionDialog(null, "Choose Loading Option!", "Open :)",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, choice, choice[0]);
 				controller.open(optionChosen);
 			}
 		});
 		btnOpen.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnOpen.setEnabled(true);
 		
+		
+		// Button for loading log step by step
 		btnLoadNext = new JButton("Load Next");
+		btnLoadNext.setVisible(false);
 		btnLoadNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnLoadNext.isEnabled()) {
@@ -584,6 +654,7 @@ public class FrmDrawing extends JFrame{
 		
 	
 		
+		//Action when user click on panel
 		view.addMouseListener(new MouseAdapter() {
 
 			@Override

@@ -83,7 +83,7 @@ public class DlgRectMod extends JDialog {
 		textHeight = new JTextField();
 		textHeight.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textHeight.setColumns(10);
-		JButton btnColor = new JButton("Color->>");
+		JButton btnColor = new JButton("Border Color->>");
 		btnColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -94,7 +94,7 @@ public class DlgRectMod extends JDialog {
 				textColor.setBackground(color);
 			}
 		});
-		JButton btnInnerColor = new JButton("Inner color->>");
+		JButton btnInnerColor = new JButton("Fill Color->>");
 		btnInnerColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnInnerColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

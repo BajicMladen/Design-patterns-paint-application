@@ -6,7 +6,7 @@ import geometry.Shape;
 import mvc.DrawingModel;
 import mvc.FrmDrawing;
 
-public class ShapeObserver implements java.util.Observer {
+public class ShapeObserver implements java.util.Observer { 
 	private FrmDrawing frame;
 	private DrawingModel model;
 	
@@ -16,10 +16,10 @@ public class ShapeObserver implements java.util.Observer {
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(Observable o, Object arg) { 
 		int count=getSelectedShapes();
 		
-		if(count==0) {
+		if(count==0) { // Non of shapes in list are selected and modify,delete, position change options are disabled
 			frame.getBtnModify().setEnabled(false);
 			frame.getBtnDelete().setEnabled(false);
 			
@@ -29,7 +29,7 @@ public class ShapeObserver implements java.util.Observer {
 			frame.getBtnToFront().setEnabled(false);
 			frame.getBtnToBack().setEnabled(false);
 			
-		}else if(count>1){
+		}else if(count>1){ // More than one shape is selected, user can delete, but can not change position or modify
 			
 			frame.getBtnModify().setEnabled(false);
 			frame.getBtnDelete().setEnabled(true);
@@ -39,8 +39,8 @@ public class ShapeObserver implements java.util.Observer {
 			frame.getBtnBringToBack().setEnabled(false);
 			frame.getBtnToFront().setEnabled(false);
 			frame.getBtnToBack().setEnabled(false);
-		}else {
 			
+		}else {// one shape is selected and all options are available			
 			frame.getBtnModify().setEnabled(true);
 			frame.getBtnDelete().setEnabled(true);
 			
@@ -53,7 +53,7 @@ public class ShapeObserver implements java.util.Observer {
 
 	}
 	
-	public int getSelectedShapes() {
+	public int getSelectedShapes() { // Method for counting all selected shapes
 		int counter=0;
 		for(Shape s : model.getShapes()) {
 			if(s.isSelected()) {

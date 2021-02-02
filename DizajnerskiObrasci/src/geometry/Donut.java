@@ -75,11 +75,11 @@ public class Donut extends Circle implements Cloneable{
 		
 	}
 	
-	public Shape createDonut() {
+	public Shape createDonut() { //Method for creating donut with transparent middle
 		
 		Shape outer=new Ellipse2D.Double(
-	            getCenter().getX() -getRadius(), 
-	            getCenter().getY() -getRadius(),
+	            getCenter().getX() - getRadius(), 
+	            getCenter().getY() - getRadius(),
 	            getRadius()*2, 
 	            getRadius()*2);
 		
@@ -90,7 +90,7 @@ public class Donut extends Circle implements Cloneable{
 	            innerRadius*2);
 		
 		Area area = new Area(outer);
-        area.subtract(new Area(inner));
+        area.subtract(new Area(inner)); //subtracting the inner shape from the outer shape
         return area;
 	}
 

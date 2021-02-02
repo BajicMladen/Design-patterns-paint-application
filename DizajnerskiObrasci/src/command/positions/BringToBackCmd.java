@@ -5,6 +5,8 @@ import command.Command;
 import geometry.Shape;
 import mvc.DrawingModel;
 
+
+//Command for moving shape all way to back
 public class BringToBackCmd implements Command {
 	private DrawingModel model;
 	private Shape shape;
@@ -26,7 +28,7 @@ public class BringToBackCmd implements Command {
 	}
 
 	@Override
-	public void unexecute() {
+	public void unexecute() { // Undo 
 		model.remove(shape);
 		model.getShapes().add(index,shape);
 
@@ -35,8 +37,8 @@ public class BringToBackCmd implements Command {
 
 
 	@Override
-	public String toString() {
-		return "BringToFront:" + shape.toString();
+	public String toString() { //For log
+		return "BringToBack:" + shape.toString();
 	}
 	
 	

@@ -24,14 +24,14 @@ public class DrawingSaving implements Saving{
 
 		JFileChooser jFileChooser = new JFileChooser("C:\\Users\\Korisnik\\Desktop");
 		jFileChooser.setFileFilter(new FileNameExtensionFilter("ser file (.ser)", "ser"));
-		jFileChooser.setDialogTitle("Choose file location");
+		jFileChooser.setDialogTitle("Please choose location to save!");
 		
 		if(jFileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION) {
 			
 			File drawing = new File(jFileChooser.getSelectedFile().getAbsolutePath()+".ser");
 			
 			if(drawing.exists()) {
-				JOptionPane.showMessageDialog(null, "File with that name already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "File with that name already exists! Try sometnig unique!", "Error", JOptionPane.ERROR_MESSAGE);
 			}else {
 				FileOutputStream fileOutputStream;
 				ObjectOutputStream objectOutputStream;
@@ -43,12 +43,12 @@ public class DrawingSaving implements Saving{
 					objectOutputStream.close();
 					fileOutputStream.close();
 					
-					JOptionPane.showMessageDialog(null, "Successfully saved", "Saving complete",
+					JOptionPane.showMessageDialog(null, "Nice! Successfully Saved!", "Saving Done :}",
 							JOptionPane.INFORMATION_MESSAGE);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
-	                JOptionPane.showMessageDialog(null, "Error while saving the file.", "Error!",JOptionPane.ERROR_MESSAGE);
+	                JOptionPane.showMessageDialog(null, "Error while saving the file. Please contact a developer :)", "Error!",JOptionPane.ERROR_MESSAGE);
 				}	
 				
 			}

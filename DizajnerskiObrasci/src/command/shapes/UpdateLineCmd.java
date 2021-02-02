@@ -31,9 +31,9 @@ public class UpdateLineCmd implements Command {
 	@Override
 	public void unexecute() {
 		oldState.getStartPoint().setX(original.getStartPoint().getX());
-		oldState.getStartPoint().setX(original.getStartPoint().getY());
+		oldState.getStartPoint().setY(original.getStartPoint().getY());
 		oldState.getEndPoint().setX(original.getEndPoint().getX());
-		oldState.getEndPoint().setX(original.getEndPoint().getY());
+		oldState.getEndPoint().setY(original.getEndPoint().getY());
 		oldState.setColor(original.getColor());
 
 	}

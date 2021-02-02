@@ -12,14 +12,14 @@ import mvc.DrawingModel;
 
 public class RemoveShapeCmd implements Command {
 	private DrawingModel model;
-	private Hashtable<Integer,Shape> shapes;
+	private Hashtable<Integer,Shape> shapes; // storing key(index),value pairs.
 	
 	
 	
 	
 	public RemoveShapeCmd(DrawingModel model,ArrayList<Shape> shapes) {
 		this.model=model;
-		this.shapes=new Hashtable<>();
+		this.shapes=new Hashtable<>();                         
 		
 		for(Shape shape : shapes) {
 			this.shapes.put(model.getShapes().indexOf(shape), shape);
@@ -40,7 +40,7 @@ public class RemoveShapeCmd implements Command {
 	
 
 	@Override
-	public void unexecute() {
+	public void unexecute() { // returning shapes on same positions they  been before deleting
 		for(int key : shapes.keySet()) {
 			Shape shape = shapes.get(key);
 			if(key <= model.getShapes().size()) {
@@ -56,11 +56,11 @@ public class RemoveShapeCmd implements Command {
 
 	@Override
 	public String toString() {
-		String deleteText= "removed: ";
+		String deleteText= "Removed:";
 		
 		for(int key : shapes.keySet()) {
 			Shape shape = shapes.get(key);
-			deleteText= deleteText +","+ shape.toString();
+			deleteText=deleteText + shape.toString()+",";
 		}
 		
 		return deleteText;

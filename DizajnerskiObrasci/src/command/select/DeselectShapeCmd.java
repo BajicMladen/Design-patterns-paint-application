@@ -6,26 +6,26 @@ import geometry.Shape;
 public class DeselectShapeCmd implements Command {
 	
 	private  Shape s;
-	
+	// Class for deselecting shape 
 	public DeselectShapeCmd(Shape s) {
 		this.s=s;
 	}
 
 	@Override
-	public void execute() {
+	public void execute() { // deselect
 		s.setSelected(false);
 
 	}
 
 	@Override
-	public void unexecute() {
+	public void unexecute() { //undo 
 		s.setSelected(true);
 
 	}
 
 	@Override
-	public String toString() {
-		return "deselected:" + s.toString();
+	public String toString() { // for log
+		return "Deselected:" + s.toString();
 	}
 	
 	

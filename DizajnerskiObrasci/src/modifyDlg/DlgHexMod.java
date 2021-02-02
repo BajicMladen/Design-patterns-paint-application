@@ -73,7 +73,7 @@ public class DlgHexMod extends JDialog {
 		textCenterY = new JTextField();
 		textCenterY.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textCenterY.setColumns(10);
-		JButton btnColor = new JButton("Color->>");
+		JButton btnColor = new JButton("Border Color->>");
 		btnColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -84,7 +84,7 @@ public class DlgHexMod extends JDialog {
 				textColor.setBackground(color);
 			}
 		});
-		JButton btnInnerColor = new JButton("Inner color->>");
+		JButton btnInnerColor = new JButton("Fill color->>");
 		btnInnerColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnInnerColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
