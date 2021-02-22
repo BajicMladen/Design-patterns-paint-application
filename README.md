@@ -20,4 +20,4 @@ Java Swing application for working with 2D graphics. The application is based on
 
 10.Multiple shapes selection enabled.
 
-11.All are available only when their functionality on the drawing is possible - Observer pattern.
+11.All buttons are available only when their functionality on the drawing is possible - Observer pattern.
